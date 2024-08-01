@@ -32,9 +32,9 @@ public class ImportHelper {
         return true;
     }
 
-    public static ByteArrayInputStream tutorialsToExcel(List<Product> tutorials) {
+    public static ByteArrayInputStream tutorialsToExcel(List<Product> products) {
 
-        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             Sheet sheet = workbook.createSheet(SHEET);
 
             // Header
@@ -46,20 +46,25 @@ public class ImportHelper {
             }
 
             int rowIdx = 1;
-            for (Product tutorial : tutorials) {
+            for (Product product : products) {
                 Row row = sheet.createRow(rowIdx++);
-                row.createCell(0).setCellValue(tutorial.getName());
-                row.createCell(1).setCellValue(tutorial.getDescription());
-                row.createCell(2).setCellValue(tutorial.getPrice());
-                row.createCell(3).setCellValue(tutorial.getQuantity());
-                row.createCell(4).setCellValue(tutorial.getWeight());
-                row.createCell(5).setCellValue(tutorial.getImg());
-                row.createCell(6).setCellValue(tutorial.getCategory().getId());
+
+                // Gán các thuộc tính của Product vào các cột tương ứng
+                row.createCell(0).setCellValue(product.getActive()); // active
+                row.createCell(1).setCellValue(product.getDescription()); // description
+                row.createCell(2).setCellValue(product.getDiscount()); // discount
+                row.createCell(3).setCellValue(product.getImg()); // img
+                row.createCell(4).setCellValue(product.getName()); // name
+                row.createCell(5).setCellValue(product.getPrice()); // price (assuming it's BigDecimal)
+                row.createCell(6).setCellValue(product.getQuantity()); // quantity
+                row.createCell(7).setCellValue(product.getWeight()); // weight
+                row.createCell(8).setCellValue(product.getCategory().getId()); // category_id
             }
+
             workbook.write(out);
             return new ByteArrayInputStream(out.toByteArray());
         } catch (IOException e) {
-            throw new RuntimeException("fail to import data to Excel file: " + e.getMessage());
+            throw new RuntimeException("Fail to export data to Excel file: " + e.getMessage());
         }
     }
 

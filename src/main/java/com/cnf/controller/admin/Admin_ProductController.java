@@ -5,6 +5,7 @@ import com.cnf.helper.ImportHelper;
 import com.cnf.services.CategoryService;
 import com.cnf.services.ImportDataService;
 import com.cnf.services.ProductService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -138,19 +139,23 @@ public class Admin_ProductController {
     }
 
     @GetMapping("/download")
-    public String getFile() {
-        String filename = "tutorials.xlsx";
+    public String getFile(HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
+        // Tạo và tải file Excel
+        String filename = "ProductImport.xlsx";
         InputStreamResource file = new InputStreamResource(fileService.load());
 
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-//                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-//                .body(file);
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        file.getInputStream().transferTo(response.getOutputStream());
+
+        // Thêm thông báo sau khi tải file thành công
+        redirectAttributes.addFlashAttribute("message", "File Excel đã được tải xuống thành công!");
+
+        // Chuyển hướng về trang /admin/product
         return "redirect:/admin/product";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseBody
+    @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes ) {
         try {
             productService.deleteProductById(id);
