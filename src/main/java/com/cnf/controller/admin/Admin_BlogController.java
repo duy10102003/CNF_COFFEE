@@ -65,4 +65,17 @@ public class Admin_BlogController {
         redirectAttributes.addFlashAttribute("message", "Save successfully!");
         return "redirect:/admin/blog";
     }
+
+    @GetMapping("/delete/{id}")
+    public String deleteBlog(@PathVariable("id") Long id, RedirectAttributes redirectAttributes ) {
+        try {
+            blogService.deleteBlogById(id);
+            redirectAttributes.addFlashAttribute("message","Delete successfully!");
+            return "redirect:/admin/blog" ;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message","Failed to delete product");
+            return "redirect:/admin/blog" ;
+
+        }
+    }
 }

@@ -1,6 +1,8 @@
 package com.cnf.services;
 
+import com.cnf.entity.PasswordResetToken;
 import com.cnf.entity.User;
+import com.cnf.repository.IPasswordResetTokenRepository;
 import com.cnf.repository.IRoleRepository;
 import com.cnf.repository.IUserRepository;
 import com.cnf.constants.Provider;
@@ -20,6 +22,8 @@ public class UserService {
     IUserRepository userRepository;
     @Autowired
     IRoleRepository roleRepository;
+    @Autowired
+    IPasswordResetTokenRepository passwordResetTokenRepository;
     public Optional<User> findByEmail(String email) {
         Optional<User> result = userRepository.findByEmail(email);
         if (result.isPresent()){
@@ -80,4 +84,25 @@ public class UserService {
         existingUser.setPhone(user.getPhone());
         userRepository.save(existingUser);
     }
+
+    public Optional<User> findByUsername1(String username) {
+        return userRepository.findByUsername1(username);
+    }
+
+    public Optional<User> findByUserid1(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    public void updatePassword(User user, String newPassword) {
+        // Cập nhật mật khẩu mới cho đối tượng User
+        user.setPassword(new BCryptPasswordEncoder()
+                .encode(newPassword));
+
+        // Lưu thay đổi vào cơ sở dữ liệu
+        userRepository.save(user);
+    }
+
+
+
+
 }
