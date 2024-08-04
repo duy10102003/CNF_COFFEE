@@ -1,13 +1,18 @@
 package com.cnf.controller.client;
 
+import com.cnf.dto.request.Utility;
+import com.cnf.dto.respone.GenericResponse;
+import com.cnf.entity.PasswordResetToken;
 import com.cnf.entity.User;
-import com.cnf.services.CartService;
-import com.cnf.services.OrderDetailsService;
-import com.cnf.services.OrderService;
-import com.cnf.services.UserService;
+import com.cnf.exception.UserNotFoundException;
+import com.cnf.services.*;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,7 +22,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class UserController {
@@ -29,6 +37,11 @@ public class UserController {
     private OrderService orderService;
     @Autowired
     private OrderDetailsService orderDetailsService;
+    @Autowired
+    private PasswordResetTokenService verificationTokenService;
+    @Autowired
+    private EmailSenderService emailSenderService;
+
     @GetMapping("/login")
     public String login(HttpSession session) {
         session.setAttribute("totalItems", cartService.getSumQuantity(session));
@@ -80,4 +93,75 @@ public class UserController {
         model.addAttribute("total_price", totalPrice);
         return "client/user/details";
     }
+
+    @GetMapping("/forgotpassword")
+    public String resetPass() {
+        return "client/user/forgotPassword";
+    }
+
+    @PostMapping("/forgotpassword")
+    public String resetPassword(HttpServletRequest request,
+                                         @RequestParam("email") String userEmail, Model model) throws UserNotFoundException {
+
+        Optional<User> optionalUser = userService.findByEmail(userEmail); // Optional<User> có thể chứa hoặc không chứa User
+        User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user == null) {
+            throw new UserNotFoundException("Email not exist");
+        }
+        try {
+            PasswordResetToken token = emailSenderService.createVerificationToken(user);
+            String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token.getToken();
+            emailSenderService.sendEmailForgetPassword(userEmail, resetPasswordLink);
+            model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
+
+        } catch (UnsupportedEncodingException | MessagingException e) {
+            model.addAttribute("error", "Error while sending email");
+        }
+
+        return "client/user/forgotPassword";
+    }
+
+    @GetMapping("/reset_password")
+    public String showResetPasswordForm(@Param(value = "token") String token, Model model) {
+        Optional<PasswordResetToken> tokenOpt = verificationTokenService.findByToken(token);
+        PasswordResetToken tokenRequest = tokenOpt.orElseThrow(() -> new RuntimeException("Token Not Found"));
+
+        User user = userService.getUserByUserID(tokenRequest.getId());
+
+        model.addAttribute("token", token);
+
+        if (user == null) {
+            model.addAttribute("message", "Invalid Token");
+            return "client/user/message";
+        }
+
+        return "client/user/resetPassword";
+    }
+
+    @PostMapping("/reset_password")
+    public String processResetPassword(HttpServletRequest request, Model model) {
+        String token = request.getParameter("token");
+        String password = request.getParameter("password");
+
+        Optional<PasswordResetToken> tokenOpt = verificationTokenService.findByToken(token);
+        PasswordResetToken tokenRequest = tokenOpt.orElseThrow(() -> new RuntimeException("Token Not Found"));
+
+        User user = userService.getUserByUserID(tokenRequest.getUser().getId());
+
+        model.addAttribute("title", "Reset your password");
+
+        if (user == null) {
+            model.addAttribute("message", "Invalid Token");
+            return "client/user/message";
+        } else {
+            userService.updatePassword(user, password);
+
+            model.addAttribute("message", "You have successfully changed your password.");
+        }
+
+        return "client/user/message";
+    }
+
+
 }

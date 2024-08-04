@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Message</title>
+</head>
+<body>
+<h1 th:text="${title}">Message</h1>
+<p th:text="${message}">Message content goes here</p>
+<a th:href="@{/login}">Go to Login</a>
+</body>
+</html>

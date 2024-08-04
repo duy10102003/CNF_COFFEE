@@ -49,7 +49,7 @@ public class SecurityConfig {
                         .authenticated()
                         .requestMatchers("/product/comment")
                         .authenticated()
-                        .requestMatchers("/assets/**", "/client_assets/**", "/", "/register","/product-images/**", "/avt-images/**","/blog-images/**","/blog/detail/**","/sendEmail",
+                        .requestMatchers("/assets/**", "/client_assets/**", "/","/forgotpassword", "/reset_password", "/register","/product-images/**", "/avt-images/**","/blog-images/**","/blog/detail/**","/sendEmail",
                                 "/error","/product/**","/cart/**","/add-to-cart/**", "/webjars/jquery/3.6.4/jquery.min.js","/getComments","/getTotalComment",
                                 "/total_items","/getCart","/getSumPrice","/wishlist/**","/add-to-wishlist/**","/getProduct/**","/search/**", "/about", "/contact")
                         .permitAll()
