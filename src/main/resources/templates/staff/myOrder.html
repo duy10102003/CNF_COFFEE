@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Order</title>
+    <link rel="stylesheet" th:href="@{/staff_assets/layuiadmin/layui/css/layui.css}"
+          href="../../static/staff_assets/layuiadmin/layui/css/layui.css"
+          media="all"/>
+    <link rel="stylesheet" th:href="@{/staff_assets/layuiadmin/style/admin.css}" href="../../static/staff_assets/layuiadmin/layui/css/layui.css"
+          media="all"/>
+    <style>
+        body {
+            margin: 10px;
+            background: #eeeeee;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <!-- table-->
+        <table id="tableList" lay-filter="tableList">
+
+        </table>
+        <!---->
+        <script th:inline="javascript" type="text/html" id="barDemo">
+            {{#
+            if(d.status>0||d.order.payStatus==1){
+            }}
+            <a class="layui-btn layui-btn-disabled layui-btn-xs">Cancel</a>
+            {{#
+            }else{
+            }}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">Cancel</a>
+            {{#
+            }
+            }}
+        </script>
+        <script type="text/html" id="imgUrl">
+            {{#
+            if( d.goods.imgUrl==null||d.goods.imgUrl=='')
+            { }}
+            <div style="color:red">No photo</div>
+            {{#  } else { }}
+            <img src="/restaurant/{{d.goods.imgUrl}}" class="laytable-cell-1-imgUrl">
+            {{#  } }}
+        </script>
+        <script type="text/html" id="status">
+            {{#
+                if( d.status==0){
+            }}
+                <div style="color: #01AAED">Waiting to Cook</div>
+            {{#
+                } else if(d.status==1){
+            }}
+                <div style="color: #FFB800">Cooking</div>
+            {{#
+                } else if(d.status==2){
+            }}
+                <div style="color: #FF5722">Waiting to Serve</div>
+            {{#
+                } else if(d.status==3){
+            }}
+                <div style="color:#5FB878">Served</div>
+            {{#
+                }
+            }}
+        </script>
+    </div>
+</div>
+<script th:src="@{/staff_assets/layuiadmin/layui/layui.js}" src="../static/layuiadmin/layui/layui.js"></script>
+<script th:inline="javascript">
+    layui.use(['table', 'laydate'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+            ,orderCode = [[${orderCode}]];
+        table.render({
+            elem: '#tableList'
+            , url: '/restaurant/guest/client/myOrder.do?orderCode='+orderCode//
+            , title: 'Submitted Order'
+            , even: true//
+            , request: {
+                pageName: 'pageNum' //，：page
+                , limitName: 'pageSize' //，：limit
+            }
+            , response: {
+                statusCode: 200
+            },
+            height:400
+            , limits: [6, 10, 20, 30]
+            ,limit:6
+            , page: true
+            ,size:'lg'
+            , cols: [[ //
+                 {field: 'odId', title:'ID', align: 'center', cellMinWidth: 60, fixed: 'left', sort: true,templet:'<div>{{d.odId}}</div>',hide:true}
+                , {field: 'goodsName', title: 'Food Name',align:'center', cellMinWidth: 150, sort: true,templet:'<div>{{d.goods.goodsName}}</div>'}
+                , {field: 'imgUrl', title: 'Picture',align:'center', cellMinWidth:120, templet:'#imgUrl'}
+                , {field: 'goodsCategory', title: 'Type', align:'center',cellMinWidth: 100, templet: '<div>{{d.goods.goodsCategory.categoryName}}</div>'}
+                , {field: 'price', title: 'Price',align:'center', cellMinWidth: 100,sort: true,templet:'<div>${{d.goods.price}}</div>'}
+                , {field: 'count', title: 'Count',align:'center', cellMinWidth: 100,sort:true,templet:'<div>{{d.count}}</div>'}
+                , {field: 'status', title: 'Status',align:'center', cellMinWidth: 100,sort: true,templet:"#status"}
+                , {fixed: 'right', title: "Tool Bar",align:'center', width: 120, toolbar: '#barDemo'}
+                ]]
+        });
+        //
+        table.on('tool(tableList)', function (obj) { //：tool ，test  table  lay-filter=""
+            var data = obj.data //
+                , layEvent = obj.event; // lay-event
+            if (layEvent === 'del') {
+                layer.confirm('Dismiss this order?', function (index) {
+                    $.ajax({
+                        url: "/restaurant/guest/client/delGood.do",
+                        type: "post",
+                        dataType: "JSON",
+                        data: {ids: data.odId},
+                        success: function (result) {
+                            if (result.code == 200) {
+                                obj.del(); //（tr）DOM
+                                layer.msg('Dismiss successfully!', {icon: 1});
+                            } else {
+                                layer.alert(result.msg, {
+                                    title: 'Submission Result'
+                                    , anim: 6
+                                });
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

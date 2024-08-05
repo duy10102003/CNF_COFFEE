@@ -103,7 +103,7 @@ public class UserController {
     public String resetPassword(HttpServletRequest request,
                                          @RequestParam("email") String userEmail, Model model) throws UserNotFoundException {
 
-        Optional<User> optionalUser = userService.findByEmail(userEmail); // Optional<User> có thể chứa hoặc không chứa User
+        Optional<User> optionalUser = userService.findByEmail(userEmail);
         User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found"));
 
         if (user == null) {
