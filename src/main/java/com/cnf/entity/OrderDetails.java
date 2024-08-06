@@ -13,6 +13,8 @@ public class OrderDetails {
     private int quantity;
     private int discount;
     private double total_money;
+    @Column(name = "del", nullable = true, columnDefinition = "INT DEFAULT 0")
+    private Integer del;
     @ManyToOne
     @JoinColumn(name="product_id")
     private Product product;
