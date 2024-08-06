@@ -44,17 +44,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
             Exception {
         return http.csrf(csrf -> csrf.disable())
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.disable()) // Loại bỏ X-Frame-Options header
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/cart/checkout")
                         .authenticated()
                         .requestMatchers("/product/comment")
                         .authenticated()
-                        .requestMatchers("/assets/**", "/client_assets/**", "/","/forgotpassword", "/reset_password", "/register","/product-images/**", "/avt-images/**","/blog-images/**","/blog/detail/**","/sendEmail",
+                        .requestMatchers("/assets/**", "/client_assets/**","staff_assets/**", "/","/forgotpassword", "/reset_password", "/register","/product-images/**", "/avt-images/**","/blog-images/**","/blog/detail/**","/sendEmail",
                                 "/error","/product/**","/cart/**","/add-to-cart/**", "/webjars/jquery/3.6.4/jquery.min.js","/getComments","/getTotalComment",
                                 "/total_items","/getCart","/getSumPrice","/wishlist/**","/add-to-wishlist/**","/getProduct/**","/search/**", "/about", "/contact")
                         .permitAll()
                         .requestMatchers( "/admin/**")
                         .hasAnyAuthority("ADMIN")
+                        .requestMatchers("/staff/**")
+                        .hasAnyAuthority("STAFF")
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout.logoutUrl("/logout")

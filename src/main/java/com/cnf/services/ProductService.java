@@ -1,9 +1,12 @@
 package com.cnf.services;
 
+import com.cnf.daos.ProductDTO;
+import com.cnf.entity.Category;
 import com.cnf.entity.Comment;
 import com.cnf.repository.IProductRepository;
 import com.cnf.entity.Product;
 import com.cnf.ultils.FileUploadUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -90,4 +93,25 @@ public class ProductService {
         }
         return  topRatedProduct;
     }
+
+    @Transactional
+    public Page<ProductDTO> getProductsByCategory(Long categoryId, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Category category = new Category();
+        category.setId(categoryId);
+
+        Page<Product> productPage = productRepository.findByCategory(category, pageable);
+        return productPage.map(product -> {
+            ProductDTO dto = new ProductDTO();
+            dto.setId(product.getId());
+            dto.setName(product.getName());
+            dto.setPrice(product.getPrice());
+            dto.setImage(product.getImg());
+            dto.setQuantity(product.getQuantity());
+            return dto;
+        });
+    }
+
+
+
 }

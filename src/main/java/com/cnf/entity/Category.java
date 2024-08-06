@@ -21,6 +21,6 @@ public class Category {
     @NotBlank(message = "Description is required")
     private String description;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
     private List<Product> products;
 }

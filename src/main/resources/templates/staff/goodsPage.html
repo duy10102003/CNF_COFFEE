@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>FOOD List</title>
-    <link rel="stylesheet" th:href="@{/staff_assets/layuiadmin/layui/css/layui.css}" href="../../static/staff_assets/layui/css/layui.css"
+    <link rel="stylesheet" th:href="@{/staff_assets/layuiadmin/layui/css/layui.css}" href="../../staff_assets/static/layui/css/layui.css"
           media="all"/>
     <style>
         body {
@@ -76,15 +76,16 @@
 
 </ul>
 <script th:src="@{/staff_assets/layuiadmin/layui/layui.js}" src="../../static/staff_assets/layuiadmin/layui/layui.js"></script>
+
 <script th:inline="javascript">
     var Jquery;
 
-    function clearChoice(goodsId) {
+    function clearChoice(id) {
         var goodsItems = Jquery("#content").children("li");
         for (var i = 0; i < goodsItems.size(); i++) {
             var item = goodsItems[i];
-            var id = Jquery(item).find("input[name='goodsId']").val();
-            if (id === goodsId) {
+            var pid = Jquery(item).find("input[name='id']").val();
+            if (pid === id) {
                 Jquery(item).find(".chickClick").css({"background": "none", "color": "#AF2825"});
             }
         }
@@ -111,7 +112,7 @@
                     console.log("pageNum", pageNum);
                     $.ajax({
                         type: 'POST'
-                        , url: '/restaurant/guest/goodslist.do'
+                        , url: '/staff/table/goodslist.do'
                         , data: {
                             pageNum: pageNum,
                             pageSize: pageSize,
@@ -140,14 +141,15 @@
 
                     function parseHtml(info) {
                         var html = '<li class="goods-item">' +
-                            '<input type="hidden" name="goodsId" value="' + info["goodsId"] + '">' +
-                            '<input type="hidden" name="soldState" value="' + info["soldState"] + '">' +
-                            '<div class="div-img"><img src="/restaurant' + info["imgUrl"] + '"></div>' +
+                            '<input type="hidden" name="id" value="' + info["id"] + '">' +
+                            '<input type="hidden" name="quantity" value="' + info["quantity"] + '">' +
+                            '<input type="hidden" name="soldState" value="' + 0 + '">' +
+                            '<div class="div-img"><img src="/product-images/'+ info["id"] + '/' + info["image"] + '"></div>' +
                             '<ul class="content">' +
-                            '<li class="goodName">' + info["goodsName"] + '</li>' +
+                            '<li class="name">' + info["name"] + '</li>' +
                             '<li style="color: #AF2825"><b style="float: left">$</b>' +
                             '<span style="float: left" class="price">' + info["price"] + '</span>' +
-                            '<b style="margin-left: 10px" class="store">Remaining:&nbsp</b><span class="storeCount store" style="float: left">' + info["storeCount"] + '</span><b class="store"></b>' +
+                            '<b style="margin-left: 10px" class="store">Remaining:&nbsp</b><span class="storeCount store" style="float: left">' + info["quantity"] + '</span><b class="store"></b>' +
                             '<button class="layui-btn layui-btn-primary chickClick" style="display:inline-block;float:right;width:60px;font-size:12px;padding:0px 4px;color:#AF2825;height:28px;line-height:28px;text-align:center;border-radius:25px;border: 1px solid #AF2825;">Select</button>' +
                             '</li>' +
                             '</ul>' +
@@ -176,20 +178,21 @@
                 return;
             }
             var price = $(goodsItem).find(".price").text();
-            var goodsId = $(goodsItem).find("input[name='goodsId']").val();
-            var storeCount = $(goodsItem).find(".storeCount").text();
-            var imgSrc = $(goodsItem).find("img").attr("src");
-            var goodsName = $(goodsItem).find(".goodName").text();
-            var goods = new Goods(price, imgSrc, goodsId, goodsName,storeCount);
-            parent.addGoodsByOrder(goods);
+            var id = $(goodsItem).find("input[name='id']").val();
+          //  var quantity = $(goodsItem).find(".quantity").text();
+            var quantity =  $(goodsItem).find("input[name='quantity']").val();
+            var img = $(goodsItem).find("img").attr("src");
+            var name = $(goodsItem).find(".name").text();
+            var products = new Products(price, img, id, name,quantity);
+            parent.addGoodsByOrder(products);
         });
 
-        function Goods(price, imgSrc, goodsId, goodsName,storeCount) {
+        function Products(price, img, id, name,quantity) {
             this.price = price;
-            this.imgSrc = imgSrc;
-            this.goodsId = goodsId;
-            this.goodsName = goodsName;
-            this.storeCount = storeCount;
+            this.img = img;
+            this.id = id;
+            this.name = name;
+            this.quantity = quantity;
         }
     });
 </script>
