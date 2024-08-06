@@ -106,6 +106,13 @@ public class OrderService {
         Product oldGoods = productRepository.findByProId(goodsId);
         Product newGoods = new Product();
         newGoods.setId(oldGoods.getId());
+        newGoods.setName(oldGoods.getName());
+        newGoods.setPrice(oldGoods.getPrice());
+        newGoods.setImg(oldGoods.getImg());
+        newGoods.setActive(oldGoods.getActive());
+        newGoods.setDescription(oldGoods.getDescription());
+        newGoods.setDiscount(oldGoods.getDiscount());
+        newGoods.setCategory(oldGoods.getCategory());
         newGoods.setQuantity(oldGoods.getQuantity()-count);
        // newGoods.setSoldCount(oldGoods.getSoldCount()+count);
 //        //0，

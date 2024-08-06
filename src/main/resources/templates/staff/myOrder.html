@@ -25,7 +25,7 @@
         <!---->
         <script th:inline="javascript" type="text/html" id="barDemo">
             {{#
-            if(d.status>0||d.order.payStatus==1){
+            if(d.status>0||d.orders.satus==1){
             }}
             <a class="layui-btn layui-btn-disabled layui-btn-xs">Cancel</a>
             {{#
@@ -38,7 +38,7 @@
         </script>
         <script type="text/html" id="imgUrl">
             {{#
-            if( d.procuts.img==null||d.products.img=='')
+            if( d.product.img==null||d.product.img=='')
             { }}
             <div style="color:red">No photo</div>
             {{#  } else { }}
@@ -113,7 +113,7 @@
                         url: "/staff/order/delProduct",
                         type: "post",
                         dataType: "JSON",
-                        data: {ids: data.odId},
+                        data: {ids: data.id},
                         success: function (result) {
                             if (result.code == 200) {
                                 obj.del(); //（tr）DOM

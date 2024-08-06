@@ -1,6 +1,6 @@
 
 var Jquery;
-var orderCode=null;
+var orderCode= BigInt;
 var popHtml = '<div class="container layui-card" style="width: 98%;height: 98%;margin: 1%;background:#F2F2F2">\n' +
     '                <div class="layui-card top-item"\n' +
     '                     style="top:0px;height:100px;margin:0px;color: #0C0C0C;overflow:hidden;text-align: center">\n' +
@@ -139,16 +139,16 @@ layui.use(['index', "jquery"], function () {
                             var orderDetails = []
 
 
-                            function orderDetail(count, products) {
-                                this.count = count;
-                                this.products = products;
+                            function orderDetail(quantity, product) {
+                                this.quantity = quantity;
+                                this.product = product;
                             }
 
                             for (var i = 0; i < goodsItemArray.size(); i++) {
-                                var products = {};
-                                products.id = parseInt($(goodsItemArray[i]).find("input[name='id']").val());
-                                var count = parseInt($(goodsItemArray[i]).find("input[name='number']").val());
-                                orderDetails.push(new orderDetail(count, products));
+                                var product = {};
+                                product.id = parseInt($(goodsItemArray[i]).find("input[name='id']").val());
+                                var quantity = parseInt($(goodsItemArray[i]).find("input[name='number']").val());
+                                orderDetails.push(new orderDetail(quantity, product));
                             }
 
                        //     order.tableCode = $("#deskCode").text();

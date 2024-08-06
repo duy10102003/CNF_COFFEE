@@ -1,5 +1,7 @@
 package com.cnf.controller.staff;
 
+import com.cnf.daos.OrderDetailDTO;
+import com.cnf.daos.OrderMapper;
 import com.cnf.entity.OrderDetails;
 import com.cnf.entity.Orders;
 import com.cnf.entity.Result;
@@ -15,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -25,14 +29,10 @@ public class StaffOrderController{
     private OrderService orderService;
     @Autowired
     private OrderDetailsService orderDetailService;
-    /**
-     * 
-     * @return
-     */
+
     @PostMapping("/addorder")
     @ResponseBody
     private Result addOrder(@RequestBody Orders order ){
-
 
 
         Long orderCode = orderService.addOrder(order);
@@ -45,16 +45,18 @@ public class StaffOrderController{
     public Result<Page<OrderDetails>> myOrder(
             @RequestParam int pageNum,
             @RequestParam int pageSize,
-            @RequestParam Long orderId) {
+            @RequestParam Long orderCode) {
 
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         OrderDetails orderDetail = new OrderDetails();
         Orders order = new Orders();
-        order.setId(orderId);
+        order.setId(orderCode);
         orderDetail.setOrders(order);
 
         Page<OrderDetails> resultPage = orderDetailService.findPage(pageable, orderDetail);
-
+//        List<OrderDetailDTO> orderDetailsDTOs = resultPage.getContent().stream()
+//                .map(OrderMapper::toOrderDetailDTO)
+//                .collect(Collectors.toList());
         // Convert to a format that layui expects
         Map<String, Object> result = new HashMap<>();
         result.put("code", 200); // status code for layui
@@ -66,7 +68,7 @@ public class StaffOrderController{
     }
 
     @GetMapping("/myOrder")
-    public String viewOrderDetail(@RequestParam("orderCode") int orderCode, Model model){
+    public String viewOrderDetail(@RequestParam("orderCode") Long orderCode, Model model){
         model.addAttribute("orderCode",orderCode);
         return "/staff/myOrder";
     }

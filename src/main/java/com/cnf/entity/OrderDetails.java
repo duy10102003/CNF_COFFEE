@@ -1,5 +1,7 @@
 package com.cnf.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,6 +15,8 @@ public class OrderDetails {
     private int quantity;
     private int discount;
     private double total_money;
+    @Column(name = "status", nullable = false, columnDefinition = "int default 1")
+    private Integer status = 1;
     @Column(name = "del", nullable = true, columnDefinition = "INT DEFAULT 0")
     private Integer del;
     @ManyToOne
