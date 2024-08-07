@@ -144,7 +144,7 @@
         var $ = layui.$,
             layer = layui.layer,
             laypage = layui.laypage;
-        var totalNum = [[${totalPages}]];
+        var totalNum = [[${totalItems}]];
         var limit = 15;
         var currentPage = [[${currentPage}]];
 
@@ -181,7 +181,8 @@
             theme: '#393D49',
             jump: function (obj, first){
                 if (!first) {
-                    location = "/staff/table/desklis?pageNum=" + obj.curr;
+                    location = "/staff/table/desklist?pageNum=" + obj.curr;
+                   // location.href = '/staff/table/desklist/'+obj.curr;
                 }
             }
         });

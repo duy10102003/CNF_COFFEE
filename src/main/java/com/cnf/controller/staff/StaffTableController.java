@@ -44,7 +44,7 @@ public class StaffTableController{
     }
 
     @GetMapping("/desklist")
-    private String deskList(Model model, @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum){
+    private String deskList(Model model, @RequestParam(name = "pageNum", required = false, defaultValue = "1") int pageNum){
 
         int pageSize = 15;
         Page<TableBooking> page = deskService.findPaginated(pageNum, pageSize);

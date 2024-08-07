@@ -4,6 +4,7 @@ package com.cnf.services;
 import com.cnf.entity.OrderDetails;
 import com.cnf.entity.Orders;
 import com.cnf.entity.Product;
+import com.cnf.entity.StatusOrder;
 import com.cnf.enums.ResultEnum;
 import com.cnf.exception.CustomException;
 import com.cnf.repository.IOderDetailsRepository;
@@ -81,6 +82,9 @@ public class OrderService {
         LocalDateTime now = LocalDateTime.now();
 
         order.setDate_purchase(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()));
+        StatusOrder statusOrder = new StatusOrder();
+        statusOrder.setId(Long.valueOf(3));
+        order.setStatus_order(statusOrder);
         //orderIdorder
         orderRepository.save(order);
         //orderId

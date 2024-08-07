@@ -7,7 +7,7 @@ var popHtml = '<div class="container layui-card" style="width: 98%;height: 98%;m
     '                    <ul style="overflow: hidden;margin: 36px 5px 35px 10px">\n' +
     '                        <li style="float: left">\n' +
     '                            <div style="font-size: 20px;color: red">\n' +
-    '                                <span style="height:30px;text-align: center;line-height: 30px">Total:$</span>\n' +
+    '                                <span style="height:30px;text-align: center;line-height: 30px">Total:VND</span>\n' +
     '                                <input type="text" id="totalMoney"\n' +
     '                                       style="width: 60px;height: 30px;text-align: center;line-height: 30px;border: none;background:none;color: red" value="0.00" disabled></li>\n' +
     '                        <li style="float: right">\n' +
@@ -65,7 +65,7 @@ function parseGoodSView(products) {
         '                        <li class="goods-item-li-other" style="padding:20px 0px 20px 3%; width: 22%;">\n' +
         '                            <span class="name"\n' +
         '                                  style="display:inline-block;line-height: 30px;height:30px;font-size:14px;color: #0C0C0C">' + products.name + '</span><br/>\n' +
-        '                            <span style="display:inline-block;line-height: 30px;height:30px;color: red">$<input\n' +
+        '                            <span style="display:inline-block;line-height: 30px;height:30px;color: red">VND<input\n' +
         '                                    type="text" style="width: 30px;border: none;background:none;color: red" name="price"\n' +
         '                                    value=" ' + products.price + '" disabled>per one</span>\n' +
         '                        </li>\n' +

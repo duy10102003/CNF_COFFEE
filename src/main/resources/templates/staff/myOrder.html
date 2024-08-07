@@ -102,6 +102,24 @@
                 , {field: 'status', title: 'Status',align:'center', cellMinWidth: 100,sort: true,templet:"#status"}
                 , {fixed: 'right', title: "Tool Bar",align:'center', width: 120, toolbar: '#barDemo'}
                 ]]
+      //  });
+            , text: {
+                none: 'No Data' // Thông báo lỗi khi không có dữ liệu
+            }
+            , parseData: function(res) { // Phân tích dữ liệu trả về từ server
+                if (res.code !== 200) {
+                    return {
+                        "code": res.code, // Mã trạng thái
+                        "msg": 'Data interface request error:: ' + res.msg // Thông báo lỗi
+                    };
+                }
+                return {
+                    "code": 0, // Mã trạng thái
+                    "msg": '', // Thông báo lỗi
+                    "count": res.count, // Tổng số bản ghi
+                    "data": res.data // Dữ liệu
+                };
+            }
         });
         //
         table.on('tool(tableList)', function (obj) { //：tool ，test  table  lay-filter=""
