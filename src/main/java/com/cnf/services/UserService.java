@@ -38,6 +38,10 @@ public class UserService {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.userRepository.findAll(pageable);
     }
+    public Page<User> findPaginatedStaff(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.userRepository.findStaffUser(pageable);
+    }
     public User getUserbyUserName(String username){
         return  userRepository.findByUsername(username);
     }
@@ -57,6 +61,21 @@ public class UserService {
             userRepository.addRoleToUser(userId,roleId);
         }
     }
+
+    public void saveStaff(User user) {
+        user.setPassword(new BCryptPasswordEncoder()
+                .encode(user.getPassword()));
+        user.setProvider(Provider.LOCAL.value);
+        user.setImg("/client_assets/img/user.png");
+        userRepository.save(user);
+
+        Long userId = userRepository.getUserIdByUsername(user.getUsername());
+        Long roleId = roleRepository.getRoleIdByName("STAFF");
+        if(roleId != 0 && userId != 0){
+            userRepository.addRoleToUser(userId,roleId);
+        }
+    }
+
     public void saveOauthUser(String email, String username, String fullName) {
         User usert = userRepository.findByUsername(username);
         if (usert != null) {

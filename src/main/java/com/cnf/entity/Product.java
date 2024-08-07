@@ -22,7 +22,8 @@ public class Product {
     private Long id;
     @NotBlank(message = "Name is required")
     private String name;
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Description is required")
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     @Min(value = 1, message = "Rent should be greater than or equal to 1")
     private double price;

@@ -2,11 +2,14 @@ package com.cnf.repository;
 
 import com.cnf.entity.User;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,4 +37,11 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.id = ?1")
     Optional<User> getUserByUserID1 (Long userID);
+
+    @Query(
+            value = "SELECT u.* FROM User u INNER JOIN user_role ur ON u.id = ur.user_id WHERE ur.role_id = 3",
+            countQuery = "SELECT count(*) FROM User u INNER JOIN user_role ur ON u.id = ur.user_id WHERE ur.role_id = 3",
+            nativeQuery = true
+    )
+    Page<User> findStaffUser(Pageable pageable);
 }

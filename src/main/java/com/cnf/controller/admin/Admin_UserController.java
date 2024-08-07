@@ -1,15 +1,20 @@
 package com.cnf.controller.admin;
 
+import com.cnf.entity.Product;
 import com.cnf.entity.User;
 import com.cnf.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -34,4 +39,48 @@ public class Admin_UserController {
         model.addAttribute("users", listUser);
         return "admin/user/index";
     }
+
+
+
+//    @GetMapping("/add")
+//    public String addNew(Model model){
+//        model.addAttribute("user", new Product());
+//        model.addAttribute("roles", categoryService.getAllCategories());
+//        return "admin/product/add";
+//    }
+//    @PostMapping("/add")
+//    public String add(@Valid @ModelAttribute("product")Product product,
+//                      BindingResult bindingResult, Model model,
+//                      @RequestParam("image") MultipartFile multipartFile,
+//                      RedirectAttributes redirectAttributes) throws IOException {
+//
+//        if (bindingResult.hasErrors()) {
+//            List<FieldError> errors = bindingResult.getFieldErrors();
+//            for (FieldError error : errors) {
+//                model.addAttribute(error.getField() + "_error",
+//                        error.getDefaultMessage());
+//            }
+//            model.addAttribute("categories", categoryService.getAllCategories());
+//            return "admin/product/add";
+//        }
+//        productService.addProduct(product,multipartFile);
+//        redirectAttributes.addFlashAttribute("message", "Save successfully!");
+//        return "redirect:/admin/product";
+//    }
+//    @GetMapping("/edit/{id}")
+//    public String edit(@PathVariable("id") Long id, Model model){
+//        Product editProduct = null;
+//        for(Product product: productService.getAllProducts()){
+//            if(product.getId() == id){
+//                editProduct = product;
+//            }
+//        }
+//        if(editProduct != null){
+//            model.addAttribute("product", editProduct);
+//            model.addAttribute("categories", categoryService.getAllCategories());
+//            return "admin/product/edit";
+//        }else {
+//            return "not-found";
+//        }
+//    }
 }

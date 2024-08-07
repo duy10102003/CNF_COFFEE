@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new product</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18">Add Staff</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a th:href="@{/admin/staff_user}">Staff</a></li>
+                        <li class="breadcrumb-item active">Add Staff</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Staff Information</h4></div>
+                <div class="card-body">
+                    <form th:action="@{/admin/staff_user/add}" th:object="${staff}"
+                           method="post">
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                                <div class="mb-3">
+                                    <label for="username">UserName</label>
+                                    <input th:field="*{username}" id="username" name="username" type="text" class="form-control">
+                                    <div style="text-align: left; margin-top: 13px">
+                                        <span class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password">Password</label>
+                                    <input th:field="*{password}" id="password" name="password" type="password" class="form-control">
+                                    <div style="text-align: left; margin-top: 13px">
+                                        <span class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmpassword">Confirm Password</label>
+                                    <input style="letter-spacing: normal" id="confirmpassword" name="confirmpassword" type="password" class="form-control" oninput="checkPasswordMatch(this);">
+                                </div>
+
+<!--                                <div class="mb-3">-->
+<!--                                    <label for="weight">Weight (kg)</label>-->
+<!--                                    <input th:field="*{weight}" id="weight" name="weight" min="0.1" type="number"-->
+<!--                                           class="form-control">-->
+<!--                                </div>-->
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label for="email">Email</label>
+                                    <input th:field="*{email}" id="email" name="email" type="email"
+                                           class="form-control">
+                                    <div style="text-align: left; margin-top: 13px">
+                                        <span class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="full_name">Full Name</label>
+                                    <input th:field="*{full_name}" id="full_name"  name="full_name" type="text"
+                                           class="form-control">
+                                    <div style="text-align: left; margin-top: 13px">
+                                        <span class="alert alert-danger" th:if="${#fields.hasErrors('full_name')}" th:errors="*{full_name}"></span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone">Phone</label>
+                                    <input th:field="*{phone}" id="phone"  name="phone" type="text"
+                                           class="form-control">
+                                    <div style="text-align: left; margin-top: 13px">
+                                        <span class="alert alert-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <input type="submit" value="Save Changes" class="btn btn-primary waves-effect waves-light">
+                            <a th:href="@{/admin/staff_user}" type="button"
+                               class="btn btn-secondary waves-effect waves-light">Cancel</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+    <script th:inline="javascript">
+        function checkPasswordMatch(fieldConfirmPassword) {
+            if (fieldConfirmPassword.value != $("#password").val()) {
+                fieldConfirmPassword.setCustomValidity("Passwords do not match!");
+            } else {
+                fieldConfirmPassword.setCustomValidity("");
+            }
+        }
+    </script>
+</div>
+
+</body>
+</html>
