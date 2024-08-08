@@ -21,14 +21,26 @@ import java.util.List;
 public class Admin_CategoryController {
     @Autowired
     private CategoryService categoryService;
+//    @GetMapping("")
+//    public String index(Model model){
+//
+//        if(model.containsAttribute("message")){
+//            model.addAttribute("message", model.getAttribute("message"));
+//        }
+//        return findPaginated(1,model);
+//    }
+
     @GetMapping("")
     public String index(Model model){
 
         if(model.containsAttribute("message")){
             model.addAttribute("message", model.getAttribute("message"));
         }
-        return findPaginated(1,model);
+        List<Category> listCategory = categoryService.getAllCategories();
+        model.addAttribute("categories", listCategory);
+        return "admin/category/index";
     }
+
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable (value = "pageNo") int pageNo, Model model) {
         int pageSize = 5;

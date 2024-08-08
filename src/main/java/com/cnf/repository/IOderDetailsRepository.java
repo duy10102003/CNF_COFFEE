@@ -35,4 +35,6 @@ public interface IOderDetailsRepository extends JpaRepository<OrderDetails, Long
 
 
     Page<OrderDetails> findAll(Specification<OrderDetails> specification, Pageable pageable);
+    @Query("SELECT od FROM OrderDetails od WHERE od.orders.id = :orderId")
+    Page<OrderDetails> findByOrderId(@Param("orderId") Long orderId, Pageable pageable);
 }

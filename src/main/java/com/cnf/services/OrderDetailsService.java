@@ -33,7 +33,10 @@ public class OrderDetailsService {
         return oderDetailsRepository.findTop5ProductsByRevenue(pageable);
     }
 
-
+    public Page<OrderDetails> getOrderDetailsByOrderId(Long orderId, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        return oderDetailsRepository.findByOrderId(orderId, pageable);
+    }
 
     public Page<OrderDetails> findPage(Pageable pageable, OrderDetails filter) {
         // Sử dụng Specification để áp dụng các điều kiện lọc

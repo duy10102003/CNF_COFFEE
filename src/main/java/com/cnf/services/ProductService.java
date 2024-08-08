@@ -26,6 +26,12 @@ public class ProductService {
     public List<Product> getAllProducts(){
         return  productRepository.findAll();
     }
+    public List<Product> getAllProductsActive(){
+        return  productRepository.getAllProductActive();
+    }
+    public List<Product> getAllProductsNotActive(){
+        return  productRepository.getAllProductNotActive();
+    }
     public List<Product> getALlProductsByCategoryId(Long id){
         return productRepository.getAllProductById(id);
     }
@@ -102,14 +108,21 @@ public class ProductService {
 
         Page<Product> productPage = productRepository.findByCategory(category, pageable);
         return productPage.map(product -> {
-            ProductDTO dto = new ProductDTO();
-            dto.setId(product.getId());
-            dto.setName(product.getName());
-            dto.setPrice(product.getPrice());
-            dto.setImage(product.getImg());
-            dto.setQuantity(product.getQuantity());
-            return dto;
+            if(product.getActive()) {
+                ProductDTO dto = new ProductDTO();
+                dto.setId(product.getId());
+                dto.setName(product.getName());
+                dto.setPrice(product.getPrice());
+                dto.setImage(product.getImg());
+                dto.setQuantity(product.getQuantity());
+                return dto;
+            }
+            return null;
         });
+    }
+
+    public Product save(Product product) {
+        return productRepository.save(product);
     }
 
 

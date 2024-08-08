@@ -5,7 +5,7 @@
       lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User manager</title>
+  <title>Staff manager</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -13,12 +13,12 @@
   <div class="row">
     <div class="col-12">
       <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-        <h4 class="mb-sm-0 font-size-18">Users</h4>
+        <h4 class="mb-sm-0 font-size-18">Staffs</h4>
 
         <div class="page-title-right">
           <ol class="breadcrumb m-0">
             <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-            <li class="breadcrumb-item active">Users</li>
+            <li class="breadcrumb-item active">Staffs</li>
           </ol>
         </div>
 
@@ -34,10 +34,10 @@
           <div class="row mb-2">
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
-                <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Search...">
-                  <i class="bx bx-search-alt search-icon"></i>
-                </div>
+<!--                <div class="position-relative">-->
+<!--                  <input type="text" class="form-control" placeholder="Search...">-->
+<!--                  <i class="bx bx-search-alt search-icon"></i>-->
+<!--                </div>-->
               </div>
             </div>
             <div class="col-sm-8">
@@ -48,7 +48,7 @@
           </div>
 
           <div class="table-responsive">
-            <table class="table align-middle table-nowrap table-check">
+            <table class="table align-middle table-nowrap table-check" id="staffs">
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
@@ -71,28 +71,28 @@
               </tbody>
             </table>
           </div>
-          <div th:if = "${totalPages > 1}">
-            <div class = "row col-sm-11">
-              <div class = "col-sm-2">
-                Total Items: [[${totalItems}]]
-              </div>
-              <div class = "col-sm-2">
-					            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                                    <a th:if="${currentPage != i}" th:href="@{'/admin/user/page/' + ${i}}">[[${i}]]</a>
-						        <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
-					            </span>
-              </div>
-              <div class = "col-sm-1">
-                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/user/page/' + ${currentPage + 1}}">Next</a>
-                <span th:unless="${currentPage < totalPages}">Next</span>
-              </div>
+<!--          <div th:if = "${totalPages > 1}">-->
+<!--            <div class = "row col-sm-11">-->
+<!--              <div class = "col-sm-2">-->
+<!--                Total Items: [[${totalItems}]]-->
+<!--              </div>-->
+<!--              <div class = "col-sm-2">-->
+<!--					            <span th:each="i: ${#numbers.sequence(1, totalPages)}">-->
+<!--                                    <a th:if="${currentPage != i}" th:href="@{'/admin/user/page/' + ${i}}">[[${i}]]</a>-->
+<!--						        <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;-->
+<!--					            </span>-->
+<!--              </div>-->
+<!--              <div class = "col-sm-1">-->
+<!--                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/user/page/' + ${currentPage + 1}}">Next</a>-->
+<!--                <span th:unless="${currentPage < totalPages}">Next</span>-->
+<!--              </div>-->
 
-              <div class="col-sm-1">
-                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/user/page/' + ${totalPages}}">Last</a>
-                <span th:unless="${currentPage < totalPages}">Last</span>
-              </div>
-            </div>
-          </div>
+<!--              <div class="col-sm-1">-->
+<!--                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/user/page/' + ${totalPages}}">Last</a>-->
+<!--                <span th:unless="${currentPage < totalPages}">Last</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
       </div>
     </div>

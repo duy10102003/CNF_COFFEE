@@ -38,10 +38,29 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.id = ?1")
     Optional<User> getUserByUserID1 (Long userID);
 
+
+    @Query(
+            value = "\n" +
+                    "SELECT * \n" +
+                    "FROM User u \n" +
+                    "INNER JOIN user_role ur ON u.id = ur.user_id\n" +
+                    "INNER JOIN role r ON r.id = ur.role_id",
+            nativeQuery = true
+    )
+    List<User> getAllUser() ;
+
     @Query(
             value = "SELECT u.* FROM User u INNER JOIN user_role ur ON u.id = ur.user_id WHERE ur.role_id = 3",
             countQuery = "SELECT count(*) FROM User u INNER JOIN user_role ur ON u.id = ur.user_id WHERE ur.role_id = 3",
             nativeQuery = true
     )
     Page<User> findStaffUser(Pageable pageable);
+
+    @Query(
+            value = "SELECT u.* FROM User u INNER JOIN user_role ur ON u.id = ur.user_id WHERE ur.role_id = 3",
+            nativeQuery = true
+    )
+    List<User> findAllStaff();
+
+
 }

@@ -23,8 +23,10 @@ public class Admin_OrderController {
 
     @GetMapping("")
     public String index(Model model){
-
-        return findPaginated(1, model);
+        List<Orders> listOrder = orderService.getAllOrders();
+        model.addAttribute("orders", listOrder);
+        return "admin/order/index";
+       // return findPaginated(1, model);
     }
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable (value = "pageNo") int pageNo, Model model) {

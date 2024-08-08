@@ -139,23 +139,72 @@
                         }
                     })
 
+                    // function parseHtml(info) {
+                    //     var html = '<li class="goods-item">' +
+                    //         '<input type="hidden" name="id" value="' + info["id"] + '">' +
+                    //         '<input type="hidden" name="quantity" value="' + info["quantity"] + '">' +
+                    //         '<input type="hidden" name="soldState" value="' + 0 + '">' +
+                    //         '<div class="div-img"><img src="/product-images/'+ info["id"] + '/' + info["image"] + '"></div>' +
+                    //         '<ul class="content">' +
+                    //         '<li class="name">' + info["name"] + '</li>' +
+                    //         '<li style="color: #AF2825"><b style="float: left">VND</b>' +
+                    //         '<span style="float: left" class="price">' + info["price"] + '</span>' +
+                    //         '<b style="margin-left: 10px" class="store">Remaining:&nbsp</b><span class="storeCount store" style="float: left">' + info["quantity"] + '</span><b class="store"></b>' +
+                    //         '<button class="layui-btn layui-btn-primary chickClick" style="display:inline-block;float:right;width:60px;font-size:12px;padding:0px 4px;color:#AF2825;height:28px;line-height:28px;text-align:center;border-radius:25px;border: 1px solid #AF2825;">Select</button>' +
+                    //         '</li>' +
+                    //         '</ul>' +
+                    //         '</li>'
+                    //     return html;
+                    // }
+
                     function parseHtml(info) {
-                        var html = '<li class="goods-item">' +
-                            '<input type="hidden" name="id" value="' + info["id"] + '">' +
-                            '<input type="hidden" name="quantity" value="' + info["quantity"] + '">' +
-                            '<input type="hidden" name="soldState" value="' + 0 + '">' +
-                            '<div class="div-img"><img src="/product-images/'+ info["id"] + '/' + info["image"] + '"></div>' +
-                            '<ul class="content">' +
-                            '<li class="name">' + info["name"] + '</li>' +
-                            '<li style="color: #AF2825"><b style="float: left">VND</b>' +
-                            '<span style="float: left" class="price">' + info["price"] + '</span>' +
-                            '<b style="margin-left: 10px" class="store">Remaining:&nbsp</b><span class="storeCount store" style="float: left">' + info["quantity"] + '</span><b class="store"></b>' +
-                            '<button class="layui-btn layui-btn-primary chickClick" style="display:inline-block;float:right;width:60px;font-size:12px;padding:0px 4px;color:#AF2825;height:28px;line-height:28px;text-align:center;border-radius:25px;border: 1px solid #AF2825;">Select</button>' +
-                            '</li>' +
-                            '</ul>' +
-                            '</li>'
+                        if (info === null || info === undefined) {
+                            console.error("Info object is null or undefined");
+                            return ''; // Return an empty string or handle this case as needed
+                        }
+
+                        var html = '<li class="goods-item">';
+
+                        if (info["id"] !== null && info["id"] !== undefined) {
+                            html += '<input type="hidden" name="id" value="' + info["id"] + '">';
+                        }
+                        if (info["quantity"] !== null && info["quantity"] !== undefined) {
+                            html += '<input type="hidden" name="quantity" value="' + info["quantity"] + '">';
+                        }
+                        html += '<input type="hidden" name="soldState" value="' + 0 + '">';
+
+                        if (info["id"] !== null && info["id"] !== undefined && info["image"] !== null && info["image"] !== undefined) {
+                            html += '<div class="div-img"><img src="/product-images/'+ info["id"] + '/' + info["image"] + '"></div>';
+                        }
+
+                        html += '<ul class="content">';
+
+                        if (info["name"] !== null && info["name"] !== undefined) {
+                            html += '<li class="name">' + info["name"] + '</li>';
+                        }
+
+                        html += '<li style="color: #AF2825">';
+                        html += '<b style="float: left">VND</b>';
+
+                        if (info["price"] !== null && info["price"] !== undefined) {
+                            html += '<span style="float: left" class="price">' + info["price"] + '</span>';
+                        }
+
+                        if (info["quantity"] !== null && info["quantity"] !== undefined) {
+                            html += '<b style="margin-left: 10px" class="store">Remaining:&nbsp</b>';
+                            html += '<span class="storeCount store" style="float: left">' + info["quantity"] + '</span>';
+                            html += '<b class="store"></b>';
+                        }
+
+                        html += '<button class="layui-btn layui-btn-primary chickClick" style="display:inline-block;float:right;width:60px;font-size:12px;padding:0px 4px;color:#AF2825;height:28px;line-height:28px;text-align:center;border-radius:25px;border: 1px solid #AF2825;">Select</button>';
+                        html += '</li>';
+                        html += '</ul>';
+                        html += '</li>';
+
                         return html;
                     }
+
+
 
                     //，：“”，
                     //pagesAjax，，

@@ -20,9 +20,15 @@ import java.util.List;
 public class Admin_StaffController {
     @Autowired
     private UserService userService;
+//    @GetMapping()
+//    public String index(Model model){
+//        return findPaginated(1, model);
+//    }
     @GetMapping()
     public String index(Model model){
-        return findPaginated(1, model);
+        List<User> listStaff = userService.getAllSatff();
+        model.addAttribute("users", listStaff);
+        return "admin/staff_user/index";
     }
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {

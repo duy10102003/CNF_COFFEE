@@ -14,10 +14,16 @@ import java.util.List;
 
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT p from Product p WHERE p.category.id = ?1")
+    @Query("SELECT p from Product p WHERE p.category.id = ?1 AND p.active = true")
     List<Product> getAllProductById(Long id);
 
-    @Query("SELECT p from Product p where p.name like %?1%")
+    @Query("SELECT p from Product p WHERE p.active = true")
+    List<Product> getAllProductActive();
+
+    @Query("SELECT p from Product p WHERE p.active = false")
+    List<Product> getAllProductNotActive();
+
+    @Query("SELECT p from Product p where p.name like %?1% and p.active = true")
     List<Product> searchProductByNam(String keyword, Pageable pageable);
 
     @Query("SELECT p FROM Product p WHERE p.id = ?1")

@@ -34,12 +34,22 @@ public class Admin_ProductController {
     private CategoryService categoryService;
     @Autowired
     private ImportDataService fileService;
+//    @GetMapping("")
+//    public String index(Model model){
+//        if(model.containsAttribute("message")){
+//            model.addAttribute("message", model.getAttribute("message"));
+//        }
+//        return findPaginated(1, model);
+//    }
     @GetMapping("")
     public String index(Model model){
         if(model.containsAttribute("message")){
             model.addAttribute("message", model.getAttribute("message"));
         }
-        return findPaginated(1, model);
+
+        List<Product> listProduct = productService.getAllProductsActive();
+        model.addAttribute("products", listProduct);
+        return "admin/product/index";
     }
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable (value = "pageNo") int pageNo, Model model) {
@@ -158,7 +168,9 @@ public class Admin_ProductController {
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes ) {
         try {
-            productService.deleteProductById(id);
+            Product product =  productService.getProductById(id);
+            product.setActive(false);
+            productService.save(product);
             redirectAttributes.addFlashAttribute("message","Delete successfully!");
             return "redirect:/admin/product" ;
         } catch (Exception e) {
@@ -167,5 +179,32 @@ public class Admin_ProductController {
 
         }
     }
+
+    @GetMapping("/notactive")
+    public String notActive(Model model){
+        if(model.containsAttribute("message")){
+            model.addAttribute("message", model.getAttribute("message"));
+        }
+        List<Product> listProduct = productService.getAllProductsNotActive();
+        model.addAttribute("products", listProduct);
+        return "admin/product/notActive";
+    }
+
+    @GetMapping("/deactive/{id}")
+    public String deactiveProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes ) {
+        try {
+            Product product =  productService.getProductById(id);
+            product.setActive(true);
+            productService.save(product);
+            redirectAttributes.addFlashAttribute("message","Active successfully!");
+            return "redirect:/admin/product" ;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message","Failed to active product");
+            return "redirect:/admin/product" ;
+
+        }
+    }
+
+
 
 }

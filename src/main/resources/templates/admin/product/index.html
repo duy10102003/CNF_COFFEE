@@ -35,8 +35,10 @@
                         <div class="col-sm-4">
                             <div class="search-box me-2 mb-2 d-inline-block">
                                 <div class="position-relative">
-                                    <input type="text" class="form-control" placeholder="Search...">
-                                    <i class="bx bx-search-alt search-icon"></i>
+<!--                                    <input type="text" class="form-control" placeholder="Search...">-->
+<!--                                    <i class="bx bx-search-alt search-icon"></i>-->
+                                    <a th:href="@{/admin/product/notactive}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Not Active Product</a>
+
                                 </div>
                             </div>
                         </div>
@@ -60,69 +62,118 @@
                         </div><!-- end col-->
 
                     </div>
-
-                    <div class="table-responsive">
-                        <table class="table align-middle table-nowrap table-check">
-                            <thead class="table-light">
-                            <tr>
-                                <th class="align-middle">ID</th>
-                                <th class="align-middle">Name</th>
-                                <th class="align-middle">Description</th>
-                                <th class="align-middle">Quantity</th>
-                                <th class="align-middle">Price</th>
-                                <th class="align-middle">Category</th>
-                                <th class="align-middle">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="product: ${products}">
-                                <td><a class="text-body fw-bold">#<span th:text="${product.id}"></span></a> </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
+                    <!---------datatable-------------------------------------------------------->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br /><br />
+                            <table class="table table-hover table-responsive" id="products">
+                                <thead>
+                                <tr>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span> ID</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span> Name</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span> Description</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span> Quantity</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span> Price</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span> Category</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span> Action</th>
+                                    <!--                    <th>-->
+                                    <!--                      <a asp-controller="Admin" asp-action="AddTrip" class="btn btn-link">-->
+                                    <!--                        <span class="fa fa-plus fa-fw  text-info"></span> Add New Trip-->
+                                    <!--                      </a>-->
+                                    <!--                    </th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="product: ${products}">
+                                    <td><a class="text-body fw-bold"><span th:text="${product.id}"></span></a> </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
                                             <img class="img-fluid rounded" th:src="@{${product.imagesPath}}" style="max-width: 60px" alt="">
-                                        <h6 class="m-b-0 m-l-10" th:text="${product.name}"></h6>
-                                    </div>
-                                </td>
-                                <td>...</td>
-                                <td><span th:text="${product.quantity}"></span></td>
-                                <td><span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span> VNĐ</td>
-                                <td th:text="${product.category.name}"></td>
-                                <td>
-                                    <div class="d-flex gap-3">
-                                        <a th:href="@{/admin/product/edit/{id}(id=${product.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                            <h6 class="m-b-0 m-l-10" th:text="${product.name}"></h6>
+                                        </div>
+                                    </td>
+                                    <td>...</td>
+                                    <td><span th:text="${product.quantity}"></span></td>
+                                    <td><span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span> VNĐ</td>
+                                    <td th:text="${product.category.name}"></td>
+                                    <td>
+                                        <div class="d-flex gap-3">
+                                            <a th:href="@{/admin/product/edit/{id}(id=${product.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
 
-                                        <a th:href="@{/admin/product/delete/{id}(id=${product.id})}" class="text-danger"
-                                           onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
-                                            <i class="mdi mdi-delete font-size-18"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div th:if = "${totalPages > 1}">
-                        <div class = "row col-sm-11">
-                            <div class = "col-sm-2">
-                                Total Items: [[${totalItems}]]
-                            </div>
-                            <div class = "col-sm-2">
-					            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                                    <a th:if="${currentPage != i}" th:href="@{'/admin/product/page/' + ${i}}">[[${i}]]</a>
-						        <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
-					            </span>
-                            </div>
-                            <div class = "col-sm-1">
-                                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/product/page/' + ${currentPage + 1}}">Next</a>
-                                <span th:unless="${currentPage < totalPages}">Next</span>
-                            </div>
-
-                            <div class="col-sm-1">
-                                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/product/page/' + ${totalPages}}">Last</a>
-                                <span th:unless="${currentPage < totalPages}">Last</span>
-                            </div>
+                                            <a th:href="@{/admin/product/delete/{id}(id=${product.id})}" class="text-danger"
+                                               onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                                                <i class="mdi mdi-delete font-size-18"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+
+<!--                    <div class="table-responsive">-->
+<!--                        <table class="table align-middle table-nowrap table-check">-->
+<!--                            <thead class="table-light">-->
+<!--                            <tr>-->
+<!--                                <th class="align-middle">ID</th>-->
+<!--                                <th class="align-middle">Name</th>-->
+<!--                                <th class="align-middle">Description</th>-->
+<!--                                <th class="align-middle">Quantity</th>-->
+<!--                                <th class="align-middle">Price</th>-->
+<!--                                <th class="align-middle">Category</th>-->
+<!--                                <th class="align-middle">Action</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <tr th:each="product: ${products}">-->
+<!--                                <td><a class="text-body fw-bold">#<span th:text="${product.id}"></span></a> </td>-->
+<!--                                <td>-->
+<!--                                    <div class="d-flex align-items-center">-->
+<!--                                            <img class="img-fluid rounded" th:src="@{${product.imagesPath}}" style="max-width: 60px" alt="">-->
+<!--                                        <h6 class="m-b-0 m-l-10" th:text="${product.name}"></h6>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td>...</td>-->
+<!--                                <td><span th:text="${product.quantity}"></span></td>-->
+<!--                                <td><span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span> VNĐ</td>-->
+<!--                                <td th:text="${product.category.name}"></td>-->
+<!--                                <td>-->
+<!--                                    <div class="d-flex gap-3">-->
+<!--                                        <a th:href="@{/admin/product/edit/{id}(id=${product.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>-->
+
+<!--                                        <a th:href="@{/admin/product/delete/{id}(id=${product.id})}" class="text-danger"-->
+<!--                                           onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">-->
+<!--                                            <i class="mdi mdi-delete font-size-18"></i>-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                    <div th:if = "${totalPages > 1}">-->
+<!--                        <div class = "row col-sm-11">-->
+<!--                            <div class = "col-sm-2">-->
+<!--                                Total Items: [[${totalItems}]]-->
+<!--                            </div>-->
+<!--                            <div class = "col-sm-2">-->
+<!--					            <span th:each="i: ${#numbers.sequence(1, totalPages)}">-->
+<!--                                    <a th:if="${currentPage != i}" th:href="@{'/admin/product/page/' + ${i}}">[[${i}]]</a>-->
+<!--						        <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;-->
+<!--					            </span>-->
+<!--                            </div>-->
+<!--                            <div class = "col-sm-1">-->
+<!--                                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/product/page/' + ${currentPage + 1}}">Next</a>-->
+<!--                                <span th:unless="${currentPage < totalPages}">Next</span>-->
+<!--                            </div>-->
+
+<!--                            <div class="col-sm-1">-->
+<!--                                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/product/page/' + ${totalPages}}">Last</a>-->
+<!--                                <span th:unless="${currentPage < totalPages}">Last</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>

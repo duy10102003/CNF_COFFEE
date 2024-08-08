@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>User manager</title>
+
 </head>
 <body>
 <div layout:fragment="content">
@@ -33,12 +34,12 @@
         <div class="card-body">
           <div class="row mb-2">
             <div class="col-sm-4">
-              <div class="search-box me-2 mb-2 d-inline-block">
-                <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Search...">
-                  <i class="bx bx-search-alt search-icon"></i>
-                </div>
-              </div>
+<!--              <div class="search-box me-2 mb-2 d-inline-block">-->
+<!--                <div class="position-relative">-->
+<!--                  <input type="text" class="form-control" placeholder="Search...">-->
+<!--                  <i class="bx bx-search-alt search-icon"></i>-->
+<!--                </div>-->
+<!--              </div>-->
             </div>
             <div class="col-sm-8">
               <div class="text-sm-end">
@@ -47,52 +48,94 @@
             </div><!-- end col-->
           </div>
 
-          <div class="table-responsive">
-            <table class="table align-middle table-nowrap table-check">
-              <thead class="table-light">
-              <tr>
-                <th class="align-middle">ID</th>
-                <th class="align-middle">Name</th>
-                <th class="align-middle">Phone</th>
-                <th class="align-middle">Action</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="user: ${users}">
-                <td><a class="text-body fw-bold">#<span th:text="${user.id}"></span></a> </td>
-                <td th:text="${user.full_name}"></td>
-                <td th:text="${user.phone}"></td>
-                <td>
-                  <div class="d-flex gap-3">
-                    <a th:href="@{/admin/user/edit/{id}(id=${user.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div th:if = "${totalPages > 1}">
-            <div class = "row col-sm-11">
-              <div class = "col-sm-2">
-                Total Items: [[${totalItems}]]
-              </div>
-              <div class = "col-sm-2">
-					            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                                    <a th:if="${currentPage != i}" th:href="@{'/admin/user/page/' + ${i}}">[[${i}]]</a>
-						        <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
-					            </span>
-              </div>
-              <div class = "col-sm-1">
-                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/user/page/' + ${currentPage + 1}}">Next</a>
-                <span th:unless="${currentPage < totalPages}">Next</span>
-              </div>
+<!--          <div class="table-responsive">-->
+<!--            <table id="users" class="table align-middle table-nowrap table-check">-->
+<!--              <thead class="table-light">-->
+<!--              <tr>-->
+<!--                <th class="align-middle">ID</th>-->
+<!--                <th class="align-middle">Name</th>-->
+<!--                <th class="align-middle">Phone</th>-->
+<!--                <th class="align-middle">Action</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr th:each="user: ${users}">-->
+<!--                <td><a class="text-body fw-bold">#<span th:text="${user.id}"></span></a> </td>-->
+<!--                <td th:text="${user.full_name}"></td>-->
+<!--                <td th:text="${user.phone}"></td>-->
+<!--                <td>-->
+<!--                  <div class="d-flex gap-3">-->
+<!--                    <a th:href="@{/admin/user/edit/{id}(id=${user.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>-->
+<!--                  </div>-->
+<!--                </td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
 
-              <div class="col-sm-1">
-                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/user/page/' + ${totalPages}}">Last</a>
-                <span th:unless="${currentPage < totalPages}">Last</span>
+
+<!--            <h2>Trips</h2>-->
+<!--            <a asp-controller="Admin" asp-action="Index" class="btn btn-default pull-right">-->
+<!--              <span class="fa fa-dashboard fa-fw  text-info"></span> Dashboard-->
+<!--            </a>-->
+<!--            <p>Whole Trips on System - Statistics Overview</p>-->
+
+            <div class="row">
+              <div class="col-md-12">
+                <br /><br />
+                <table class="table table-hover table-responsive" id="users">
+                  <thead>
+                  <tr>
+                    <th><span class="fa fa-location-arrow"></span> ID</th>
+                    <th><span class="fa fa-user-circle"></span>Name</th>
+                    <th><span class="fa fa-phone"></span>Phone</th>
+                    <th><span class="fa fa-cog"></span>Action</th>
+<!--                    <th>-->
+<!--                      <a asp-controller="Admin" asp-action="AddTrip" class="btn btn-link">-->
+<!--                        <span class="fa fa-plus fa-fw  text-info"></span> Add New Trip-->
+<!--                      </a>-->
+<!--                    </th>-->
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="user: ${users}">
+                    <td><a class="text-body fw-bold">#<span th:text="${user.id}"></span></a> </td>
+                    <td th:text="${user.full_name}"></td>
+                    <td th:text="${user.phone}"></td>
+                    <td>
+                      <div class="d-flex gap-3">
+                        <a th:href="@{/admin/user/edit/{id}(id=${user.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-          </div>
+
+
+          <!--          <div th:if = "${totalPages > 1}">-->
+<!--            <div class = "row col-sm-11">-->
+<!--              <div class = "col-sm-2">-->
+<!--                Total Items: [[${totalItems}]]-->
+<!--              </div>-->
+<!--              <div class = "col-sm-2">-->
+<!--					            <span th:each="i: ${#numbers.sequence(1, totalPages)}">-->
+<!--                                    <a th:if="${currentPage != i}" th:href="@{'/admin/user/page/' + ${i}}">[[${i}]]</a>-->
+<!--						        <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;-->
+<!--					            </span>-->
+<!--              </div>-->
+<!--              <div class = "col-sm-1">-->
+<!--                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/user/page/' + ${currentPage + 1}}">Next</a>-->
+<!--                <span th:unless="${currentPage < totalPages}">Next</span>-->
+<!--              </div>-->
+
+<!--              <div class="col-sm-1">-->
+<!--                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/user/page/' + ${totalPages}}">Last</a>-->
+<!--                <span th:unless="${currentPage < totalPages}">Last</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
       </div>
     </div>
@@ -108,9 +151,12 @@
       if (message !== '') {
         toastr.success(message);
       }
+
     });
   </script>
 </div>
 
 </body>
 </html>
+
+

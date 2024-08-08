@@ -42,35 +42,37 @@ public class StaffOrderController{
 
     @GetMapping("/myOrder.do")
     @ResponseBody
-    public Result<Page<OrderDetails>> myOrder(
+    public Page<OrderDetails> myOrder(
             @RequestParam int pageNum,
             @RequestParam int pageSize,
             @RequestParam Long orderCode) {
 
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
-        OrderDetails orderDetail = new OrderDetails();
-        Orders order = new Orders();
-        order.setId(orderCode);
-        orderDetail.setOrders(order);
+//        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+//        OrderDetails orderDetail = new OrderDetails();
+//        Orders order = new Orders();
+//        order.setId(orderCode);
+//        orderDetail.setOrders(order);
+//        Page<OrderDetails> resultPage = orderDetailService.findPage(pageable, orderDetail);
+////        List<OrderDetailDTO> orderDetailsDTOs = resultPage.getContent().stream()
+////                .map(OrderMapper::toOrderDetailDTO)
+////                .collect(Collectors.toList());
+//        // Convert to a format that layui expects
+//        Map<String, Object> result = new HashMap<>();
+//        result.put("code", 200); // status code for layui
+//        result.put("msg", "");   // message (optional)
+//        result.put("count", resultPage.getTotalElements()); // total number of records
+//        result.put("data", resultPage.getContent()); // paginated data
+//
+//        return ResultUtil.success(result);
 
-        Page<OrderDetails> resultPage = orderDetailService.findPage(pageable, orderDetail);
-//        List<OrderDetailDTO> orderDetailsDTOs = resultPage.getContent().stream()
-//                .map(OrderMapper::toOrderDetailDTO)
-//                .collect(Collectors.toList());
-        // Convert to a format that layui expects
-        Map<String, Object> result = new HashMap<>();
-        result.put("code", 200); // status code for layui
-        result.put("msg", "");   // message (optional)
-        result.put("count", resultPage.getTotalElements()); // total number of records
-        result.put("data", resultPage.getContent()); // paginated data
+            return orderDetailService.getOrderDetailsByOrderId(orderCode, pageNum, pageSize);
+        }
 
-        return ResultUtil.success(result);
-    }
 
     @GetMapping("/myOrder")
     public String viewOrderDetail(@RequestParam("orderCode") Long orderCode, Model model){
         model.addAttribute("orderCode",orderCode);
-        return "/staff/myOrder";
+        return "staff/myOrder";
     }
 
     @PostMapping("/delProduct")

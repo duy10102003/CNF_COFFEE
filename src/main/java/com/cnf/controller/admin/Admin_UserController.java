@@ -22,10 +22,18 @@ import java.util.List;
 public class Admin_UserController {
     @Autowired
     private UserService userService;
+//    @GetMapping()
+//    public String index(Model model){
+//        return findPaginated(1, model);
+//    }
+
     @GetMapping()
     public String index(Model model){
-        return findPaginated(1, model);
+        List<User> listUser = userService.getAllUsers();
+        model.addAttribute("users", listUser);
+        return "admin/user/index";
     }
+
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
         int pageSize = 5;
@@ -39,6 +47,8 @@ public class Admin_UserController {
         model.addAttribute("users", listUser);
         return "admin/user/index";
     }
+
+
 
 
 

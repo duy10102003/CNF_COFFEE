@@ -31,101 +31,173 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-sm-4">
-                            <div class="search-box me-2 mb-2 d-inline-block">
-                                <div class="position-relative">
-                                    <input type="text" class="form-control" placeholder="Search...">
-                                    <i class="bx bx-search-alt search-icon"></i>
-                                </div>
-                            </div>
+<!--                            <div class="search-box me-2 mb-2 d-inline-block">-->
+<!--                                <div class="position-relative">-->
+<!--                                    <input type="text" class="form-control" placeholder="Search...">-->
+<!--                                    <i class="bx bx-search-alt search-icon"></i>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                         <div class="col-sm-8">
                         </div><!-- end col-->
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table align-middle table-nowrap table-check">
-                            <thead class="table-light">
-                            <tr>
-                                <th class="align-middle">ID</th>
-                                <th class="align-middle">Date purchase</th>
-                                <th class="align-middle">Address</th>
-                                <th class="align-middle">Payment method</th>
-                                <th class="align-middle">Total money</th>
-                                <th class="align-middle">View details</th>
-                                <th class="align-middle">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="order: ${orders}">
-                                <td><a class="text-body fw-bold">#<span th:text="${order.id}"></span></a></td>
-                                <td th:text="${#dates.format(order.date_purchase, 'dd/MM/yyyy')}"></td>
-                                <td th:text="${order.address}"></td>
-                                <td th:if="${order.payment == true}"><i class="fab fa-cc-paypal me-1"></i>Paypal</td>
-                                <td th:if="${order.payment == false}"><i class="fas fa-money-bill-alt me-1"></i>Cash
-                                </td>
-                                <td><span
-                                        th:text="${#numbers.formatDecimal(order.total_money, 0, 'COMMA', 0, 'POINT')}"></span>
-                                    VNĐ
-                                </td>
-                                <td>
-                                    <a class="btn btn-primary btn-sm btn-rounded"
-                                       th:href="@{/admin/order/details/{id}(id=${order.id})}">
-                                        View Details
-                                    </a>
-                                </td>
-                                <td th:if="${order.status_order.id == 0}">
-                                    <a style="font-size: 14px" class="badge badge-pill bg-danger-subtle text-danger"
-                                        th:text="${order.status_order.name}">
-                                    </a>
-                                </td>
-                                <td th:if="${order.status_order.id == 1}">
-                                    <a th:href="@{/admin/order/confirm_order/{id}(id=${order.id})}"
-                                       onclick="return confirm('Are you sure you want to confirm this order?')"
-                                       style="color:#1c84ee; background-color: #d1e0fb; font-size: 14px">
-                                        <i style="font-size: 20px" class="bx bx-check"></i>
-                                        Confirm order
-                                    </a>
-                                </td>
-                                <td th:if="${order.status_order.id == 2}">
-                                    <a style="font-size: 14px" th:href="@{/admin/order/confirm_shipped/{id}(id=${order.id})}"
-                                       onclick="return confirm('Are you sure you want to confirm this order?')"
-                                       class="badge badge-pill bg-warning-subtle text-warning ">
-                                        <i style="font-size: 20px" class="bx bx-check"></i>
-                                        Confirm shipped
-                                    </a>
-                                </td>
-                                <td th:if="${order.status_order.id == 3}">
-                                    <a style="font-size: 14px"class="badge badge-pill bg-success-subtle text-success">
-                                        <i style="font-size: 20px" class="bx bx-check"></i>
+                    <!---------datatable-------------------------------------------------------->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br /><br />
+                            <table class="table table-hover table-responsive" id="orders">
+                                <thead>
+                                <tr>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span>ID</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span>Date purchase</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span>Address</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span>Payment method</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span>Total money</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span>View details</th>
+                                    <th class="align-middle"><span class="fa fa-location-arrow"></span>Action</th>
+                                    <!--                    <th>-->
+                                    <!--                      <a asp-controller="Admin" asp-action="AddTrip" class="btn btn-link">-->
+                                    <!--                        <span class="fa fa-plus fa-fw  text-info"></span> Add New Trip-->
+                                    <!--                      </a>-->
+                                    <!--                    </th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="order: ${orders}">
+                                    <td><a class="text-body fw-bold"><span th:text="${order.id}"></span></a></td>
+                                    <td th:text="${#dates.format(order.date_purchase, 'dd/MM/yyyy')}"></td>
+                                    <td th:text="${order.address}"></td>
+                                    <td th:if="${order.payment == true}"><i class="fab fa-cc-paypal me-1"></i>Paypal</td>
+                                    <td th:if="${order.payment == false}"><i class="fas fa-money-bill-alt me-1"></i>Cash
+                                    </td>
+                                    <td><span
+                                            th:text="${#numbers.formatDecimal(order.total_money, 0, 'COMMA', 0, 'POINT')}"></span>
+                                        VNĐ
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm btn-rounded"
+                                           th:href="@{/admin/order/details/{id}(id=${order.id})}">
+                                            View Details
+                                        </a>
+                                    </td>
+                                    <td th:if="${order.status_order.id == 0}">
+                                        <a style="font-size: 14px" class="badge badge-pill bg-danger-subtle text-danger"
+                                           th:text="${order.status_order.name}">
+                                        </a>
+                                    </td>
+                                    <td th:if="${order.status_order.id == 1}">
+                                        <a th:href="@{/admin/order/confirm_order/{id}(id=${order.id})}"
+                                           onclick="return confirm('Are you sure you want to confirm this order?')"
+                                           style="color:#1c84ee; background-color: #d1e0fb; font-size: 14px">
+                                            <i style="font-size: 20px" class="bx bx-check"></i>
+                                            Confirm order
+                                        </a>
+                                    </td>
+                                    <td th:if="${order.status_order.id == 2}">
+                                        <a style="font-size: 14px" th:href="@{/admin/order/confirm_shipped/{id}(id=${order.id})}"
+                                           onclick="return confirm('Are you sure you want to confirm this order?')"
+                                           class="badge badge-pill bg-warning-subtle text-warning ">
+                                            <i style="font-size: 20px" class="bx bx-check"></i>
+                                            Confirm shipped
+                                        </a>
+                                    </td>
+                                    <td th:if="${order.status_order.id == 3}">
+                                        <a style="font-size: 14px"class="badge badge-pill bg-success-subtle text-success">
+                                            <i style="font-size: 20px" class="bx bx-check"></i>
                                             Complete
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div th:if = "${totalPages > 1}">
-                        <div class = "row col-sm-11">
-                            <div class = "col-sm-2">
-                                Total Items: [[${totalItems}]]
-                            </div>
-                            <div class = "col-sm-2">
-					            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                                    <a th:if="${currentPage != i}" th:href="@{'/admin/order/page/' + ${i}}">[[${i}]]</a>
-						        <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
-					            </span>
-                            </div>
-                            <div class = "col-sm-1">
-                                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/order/page/' + ${currentPage + 1}}">Next</a>
-                                <span th:unless="${currentPage < totalPages}">Next</span>
-                            </div>
-
-                            <div class="col-sm-1">
-                                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/order/page/' + ${totalPages}}">Last</a>
-                                <span th:unless="${currentPage < totalPages}">Last</span>
-                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+
+<!--                    <div class="table-responsive">-->
+<!--                        <table class="table align-middle table-nowrap table-check">-->
+<!--                            <thead class="table-light">-->
+<!--                            <tr>-->
+<!--                                <th class="align-middle">ID</th>-->
+<!--                                <th class="align-middle">Date purchase</th>-->
+<!--                                <th class="align-middle">Address</th>-->
+<!--                                <th class="align-middle">Payment method</th>-->
+<!--                                <th class="align-middle">Total money</th>-->
+<!--                                <th class="align-middle">View details</th>-->
+<!--                                <th class="align-middle">Action</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <tr th:each="order: ${orders}">-->
+<!--                                <td><a class="text-body fw-bold">#<span th:text="${order.id}"></span></a></td>-->
+<!--                                <td th:text="${#dates.format(order.date_purchase, 'dd/MM/yyyy')}"></td>-->
+<!--                                <td th:text="${order.address}"></td>-->
+<!--                                <td th:if="${order.payment == true}"><i class="fab fa-cc-paypal me-1"></i>Paypal</td>-->
+<!--                                <td th:if="${order.payment == false}"><i class="fas fa-money-bill-alt me-1"></i>Cash-->
+<!--                                </td>-->
+<!--                                <td><span-->
+<!--                                        th:text="${#numbers.formatDecimal(order.total_money, 0, 'COMMA', 0, 'POINT')}"></span>-->
+<!--                                    VNĐ-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <a class="btn btn-primary btn-sm btn-rounded"-->
+<!--                                       th:href="@{/admin/order/details/{id}(id=${order.id})}">-->
+<!--                                        View Details-->
+<!--                                    </a>-->
+<!--                                </td>-->
+<!--                                <td th:if="${order.status_order.id == 0}">-->
+<!--                                    <a style="font-size: 14px" class="badge badge-pill bg-danger-subtle text-danger"-->
+<!--                                        th:text="${order.status_order.name}">-->
+<!--                                    </a>-->
+<!--                                </td>-->
+<!--                                <td th:if="${order.status_order.id == 1}">-->
+<!--                                    <a th:href="@{/admin/order/confirm_order/{id}(id=${order.id})}"-->
+<!--                                       onclick="return confirm('Are you sure you want to confirm this order?')"-->
+<!--                                       style="color:#1c84ee; background-color: #d1e0fb; font-size: 14px">-->
+<!--                                        <i style="font-size: 20px" class="bx bx-check"></i>-->
+<!--                                        Confirm order-->
+<!--                                    </a>-->
+<!--                                </td>-->
+<!--                                <td th:if="${order.status_order.id == 2}">-->
+<!--                                    <a style="font-size: 14px" th:href="@{/admin/order/confirm_shipped/{id}(id=${order.id})}"-->
+<!--                                       onclick="return confirm('Are you sure you want to confirm this order?')"-->
+<!--                                       class="badge badge-pill bg-warning-subtle text-warning ">-->
+<!--                                        <i style="font-size: 20px" class="bx bx-check"></i>-->
+<!--                                        Confirm shipped-->
+<!--                                    </a>-->
+<!--                                </td>-->
+<!--                                <td th:if="${order.status_order.id == 3}">-->
+<!--                                    <a style="font-size: 14px"class="badge badge-pill bg-success-subtle text-success">-->
+<!--                                        <i style="font-size: 20px" class="bx bx-check"></i>-->
+<!--                                            Complete-->
+<!--                                    </a>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                    <div th:if = "${totalPages > 1}">-->
+<!--                        <div class = "row col-sm-11">-->
+<!--                            <div class = "col-sm-2">-->
+<!--                                Total Items: [[${totalItems}]]-->
+<!--                            </div>-->
+<!--                            <div class = "col-sm-2">-->
+<!--					            <span th:each="i: ${#numbers.sequence(1, totalPages)}">-->
+<!--                                    <a th:if="${currentPage != i}" th:href="@{'/admin/order/page/' + ${i}}">[[${i}]]</a>-->
+<!--						        <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;-->
+<!--					            </span>-->
+<!--                            </div>-->
+<!--                            <div class = "col-sm-1">-->
+<!--                                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/order/page/' + ${currentPage + 1}}">Next</a>-->
+<!--                                <span th:unless="${currentPage < totalPages}">Next</span>-->
+<!--                            </div>-->
+
+<!--                            <div class="col-sm-1">-->
+<!--                                <a th:if="${currentPage < totalPages}" th:href="@{'/admin/order/page/' + ${totalPages}}">Last</a>-->
+<!--                                <span th:unless="${currentPage < totalPages}">Last</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>

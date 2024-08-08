@@ -34,6 +34,12 @@ public class UserService {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
+
+    public List<User> getAllSatff(){
+        return userRepository.findAllStaff();
+    }
+
+
     public Page<User> findPaginated(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.userRepository.findAll(pageable);
