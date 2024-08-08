@@ -62,5 +62,11 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     )
     List<User> findAllStaff();
 
+    @Query("SELECT u FROM User u WHERE u.active = true")
+    List<User> getAllActiveUser();
+
+    @Query("SELECT u FROM User u WHERE u.active = false")
+    List<User> getAllNotActiveUser();
+
 
 }
