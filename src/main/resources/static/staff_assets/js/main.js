@@ -1,6 +1,6 @@
 
 var Jquery;
-var orderCode= BigInt;
+var orderCode=BigInt(0);
 var popHtml = '<div class="container layui-card" style="width: 98%;height: 98%;margin: 1%;background:#F2F2F2">\n' +
     '                <div class="layui-card top-item"\n' +
     '                     style="top:0px;height:100px;margin:0px;color: #0C0C0C;overflow:hidden;text-align: center">\n' +
@@ -167,7 +167,7 @@ layui.use(['index', "jquery"], function () {
                                 dataType: 'JSON',
                                 success: function (res) {
                                     if (res.code == 200) {
-                                        orderCode = res.data;
+                                        orderCode = BigInt(res.data);
                                         popDom.empty();
 
                                         clearAllIframeStyle();
@@ -266,7 +266,7 @@ layui.use(['index', "jquery"], function () {
             layer.msg("Not order yet!",{icon:6});
             return;
         }
-        var url = "/staff/order/myOrder?orderCode="+orderCode;
+        var url = "/staff/order/myOrder?orderCode="+encodeURIComponent(orderCode.toString());
         layer.open({
             type: 2
             , title: 'Submitted Order'

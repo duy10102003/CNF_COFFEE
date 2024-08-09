@@ -6,6 +6,7 @@ import com.cnf.repository.IPasswordResetTokenRepository;
 import com.cnf.repository.IRoleRepository;
 import com.cnf.repository.IUserRepository;
 import com.cnf.constants.Provider;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -127,6 +128,12 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
+    public void toggleActiveStatus(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
+        user.setActive(!user.getActive());
+        userRepository.save(user);
+    }
 
 
 

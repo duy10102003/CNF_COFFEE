@@ -48,6 +48,20 @@ public class Admin_UserController {
         return "admin/user/index";
     }
 
+    @GetMapping("/toggleActive/{id}")
+    public String toggleActive(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            userService.toggleActiveStatus(id);
+            redirectAttributes.addFlashAttribute("message","Active successfully!");
+            return "redirect:/admin/user" ;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message","Failed to active user");
+            return "redirect:/admin/user" ;
+
+        }
+
+    }
+
 
 
 

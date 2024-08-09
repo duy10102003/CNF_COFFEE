@@ -6,7 +6,31 @@
 <head>
   <meta charset="UTF-8">
   <title>User manager</title>
+  <style>
+    .button-active {
+      background-color: green;
+      color: white;
+      border: 2px solid green;
+      border-radius: 50px; /* Tạo viền tròn */
+      padding: 10px 20px;  /* Kích thước nút */
+      cursor: pointer;
+    }
 
+    .button-inactive {
+      background-color: red;
+      color: white;
+      border: 2px solid red;
+      border-radius: 50px; /* Tạo viền tròn */
+      padding: 10px 20px;  /* Kích thước nút */
+      cursor: pointer;
+    }
+
+    .button-active:hover,
+    .button-inactive:hover {
+      opacity: 0.8; /* Tạo hiệu ứng hover */
+    }
+
+  </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -89,6 +113,7 @@
                     <th><span class="fa fa-location-arrow"></span> ID</th>
                     <th><span class="fa fa-user-circle"></span>Name</th>
                     <th><span class="fa fa-phone"></span>Phone</th>
+                    <th><span class="fa fa-cog"></span>Active</th>
                     <th><span class="fa fa-cog"></span>Action</th>
 <!--                    <th>-->
 <!--                      <a asp-controller="Admin" asp-action="AddTrip" class="btn btn-link">-->
@@ -102,6 +127,13 @@
                     <td><a class="text-body fw-bold">#<span th:text="${user.id}"></span></a> </td>
                     <td th:text="${user.full_name}"></td>
                     <td th:text="${user.phone}"></td>
+                    <td>
+                      <a th:href="@{/admin/user/toggleActive/{id}(id=${user.id})}"  onclick="return confirm('Are you sure to inactive?');">
+                        <button th:class="${user.active ? 'button-active' : 'button-inactive'}"
+                                th:text="${user.active ? 'Deactivate' : 'Activate'}">
+                        </button>
+                      </a>
+                    </td>
                     <td>
                       <div class="d-flex gap-3">
                         <a th:href="@{/admin/user/edit/{id}(id=${user.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>

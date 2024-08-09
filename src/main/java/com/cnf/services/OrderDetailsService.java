@@ -33,9 +33,14 @@ public class OrderDetailsService {
         return oderDetailsRepository.findTop5ProductsByRevenue(pageable);
     }
 
-    public Page<OrderDetails> getOrderDetailsByOrderId(Long orderId, int pageNum, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return oderDetailsRepository.findByOrderId(orderId, pageable);
+//    public Page<OrderDetails> getOrderDetailsByOrderId(Long orderId, int pageNum, int pageSize) {
+//        Pageable pageable = PageRequest.of(pageNum, pageSize);
+//        return oderDetailsRepository.findByOrderId(orderId, pageable);
+//    }
+
+    // Phương thức để lấy danh sách chi tiết đơn hàng theo mã đơn hàng và phân trang
+    public Page<OrderDetails> getOrderDetailsByOrderId(Long orderCode, Pageable pageable) {
+        return oderDetailsRepository.findByOrderId(orderCode, pageable);
     }
 
     public Page<OrderDetails> findPage(Pageable pageable, OrderDetails filter) {
