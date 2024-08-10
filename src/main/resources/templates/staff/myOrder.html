@@ -1,3 +1,142 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>My Order</title>-->
+<!--    <link rel="stylesheet" th:href="@{/staff_assets/layuiadmin/layui/css/layui.css}"-->
+<!--          href="../../static/staff_assets/layuiadmin/layui/css/layui.css"-->
+<!--          media="all"/>-->
+<!--    <link rel="stylesheet" th:href="@{/staff_assets/layuiadmin/style/admin.css}" href="../../static/staff_assets/layuiadmin/layui/css/layui.css"-->
+<!--          media="all"/>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            margin: 10px;-->
+<!--            background: #eeeeee;-->
+<!--        }-->
+<!--    </style>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>-->
+<!--    <script src="/path/to/jspdf.umd.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="layui-card">-->
+<!--    <div class="layui-card-body">-->
+<!--        &lt;!&ndash; table&ndash;&gt;-->
+<!--        <table id="tableList" lay-filter="tableList">-->
+
+<!--        </table>-->
+<!--        &lt;!&ndash;&ndash;&gt;-->
+<!--        <script th:inline="javascript" type="text/html" id="barDemo">-->
+<!--            {{#-->
+<!--            if(d.status>0||d.orders.status==1){-->
+<!--            }}-->
+<!--            <a class="layui-btn layui-btn-disabled layui-btn-xs">Cancel</a>-->
+<!--            {{#-->
+<!--            }else{-->
+<!--            }}-->
+<!--            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">Cancel</a>-->
+<!--            {{#-->
+<!--            }-->
+<!--            }}-->
+<!--        </script>-->
+<!--        <script type="text/html" id="imgUrl">-->
+<!--            {{#-->
+<!--            if( d.product.img==null||d.product.img=='')-->
+<!--            { }}-->
+<!--            <div style="color:red">No photo</div>-->
+<!--            {{#  } else { }}-->
+<!--            <img src="{{d.product.img}}" class="laytable-cell-1-imgUrl">-->
+<!--            {{#  } }}-->
+<!--        </script>-->
+<!--        <script type="text/html" id="status">-->
+<!--            {{#-->
+<!--            if( d.status==0){-->
+<!--            }}-->
+<!--            <div style="color: #01AAED">Waiting to Cook</div>-->
+<!--            {{#-->
+<!--            } else if(d.status==1){-->
+<!--            }}-->
+<!--            <div style="color: #FFB800">Cooking</div>-->
+<!--            {{#-->
+<!--            } else if(d.status==2){-->
+<!--            }}-->
+<!--            <div style="color: #FF5722">Waiting to Serve</div>-->
+<!--            {{#-->
+<!--            } else if(d.status==3){-->
+<!--            }}-->
+<!--            <div style="color:#5FB878">Served</div>-->
+<!--            {{#-->
+<!--            }-->
+<!--            }}-->
+<!--        </script>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script th:src="@{/staff_assets/layuiadmin/layui/layui.js}" src="../../static/staff_assets/layuiadmin/layui/layui.js"></script>-->
+<!--<script th:inline="javascript">-->
+<!--    layui.use(['table', 'laydate'], function () {-->
+<!--        var $ = layui.$-->
+<!--            , form = layui.form-->
+<!--            , table = layui.table-->
+<!--            ,orderCode = [[${orderCode}]];-->
+<!--        table.render({-->
+<!--            elem: '#tableList'-->
+<!--            , url: '/staff/order/myOrder.do?orderCode='+orderCode//-->
+<!--            , title: 'Submitted Order'-->
+<!--            , even: true//-->
+<!--            , request: {-->
+<!--                pageName: 'pageNum' //，：page-->
+<!--                , limitName: 'pageSize' //，：limit-->
+<!--            }-->
+<!--            , response: {-->
+<!--                statusCode: 200-->
+<!--            },-->
+<!--            height:400-->
+<!--            , limits: [6, 10, 20, 30]-->
+<!--            ,limit:6-->
+<!--            , page: true-->
+<!--            ,size:'lg'-->
+<!--            , cols: [[ //-->
+<!--                {field: 'odId', title:'ID', align: 'center', cellMinWidth: 60, fixed: 'left', sort: true,templet:'<div>{{d.id}}</div>',hide:true}-->
+<!--                , {field: 'goodsName', title: 'Food Name',align:'center', cellMinWidth: 150, sort: true,templet:'<div>{{d.product.name}}</div>'}-->
+<!--                , {field: 'imgUrl', title: 'Picture',align:'center', cellMinWidth:120, templet:'#imgUrl'}-->
+<!--                , {field: 'goodsCategory', title: 'Type', align:'center',cellMinWidth: 100, templet: '<div>{{d.product.category.name}}</div>'}-->
+<!--                , {field: 'price', title: 'Price',align:'center', cellMinWidth: 100,sort: true,templet:'<div>${{d.product.price}}</div>'}-->
+<!--                , {field: 'count', title: 'Count',align:'center', cellMinWidth: 100,sort:true,templet:'<div>{{d.quantity}}</div>'}-->
+<!--                , {field: 'status', title: 'Status',align:'center', cellMinWidth: 100,sort: true,templet:"#status"}-->
+<!--                , {fixed: 'right', title: "Tool Bar",align:'center', width: 120, toolbar: '#barDemo'}-->
+<!--            ]]-->
+<!--        });-->
+<!--        //-->
+<!--        table.on('tool(tableList)', function (obj) { //：tool ，test  table  lay-filter=""-->
+<!--            var data = obj.data //-->
+<!--                , layEvent = obj.event; // lay-event-->
+<!--            if (layEvent === 'del') {-->
+<!--                layer.confirm('Dismiss this order?', function (index) {-->
+<!--                    $.ajax({-->
+<!--                        url: "/staff/order/delProduct",-->
+<!--                        type: "post",-->
+<!--                        dataType: "JSON",-->
+<!--                        data: {ids: data.id},-->
+<!--                        success: function (result) {-->
+<!--                            if (result.code == 200) {-->
+<!--                                obj.del(); //（tr）DOM-->
+<!--                                layer.msg('Dismiss successfully!', {icon: 1});-->
+<!--                            } else {-->
+<!--                                layer.alert(result.msg, {-->
+<!--                                    title: 'Submission Result'-->
+<!--                                    , anim: 6-->
+<!--                                });-->
+<!--                            }-->
+<!--                        }-->
+<!--                    });-->
+<!--                    layer.close(index);-->
+<!--                });-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -14,10 +153,15 @@
             background: #eeeeee;
         }
     </style>
+    <!-- Sử dụng CDN để tải jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 <div class="layui-card">
     <div class="layui-card-body">
+        <!-- Thêm nút xuất PDF -->
+        <button id="exportPDF" class="layui-btn">Xuất PDF</button>
         <!-- table-->
         <table id="tableList" lay-filter="tableList">
 
@@ -75,34 +219,46 @@
             , form = layui.form
             , table = layui.table
             ,orderCode = [[${orderCode}]];
-        table.render({
-            elem: '#tableList'
-            , url: '/staff/order/myOrder.do?orderCode='+orderCode//
-            , title: 'Submitted Order'
-            , even: true//
-            , request: {
-                pageName: 'pageNum' //，：page
-                , limitName: 'pageSize' //，：limit
-            }
-            , response: {
-                statusCode: 200
-            },
-            height:400
-            , limits: [6, 10, 20, 30]
-            ,limit:6
-            , page: true
-            ,size:'lg'
-            , cols: [[ //
-                {field: 'odId', title:'ID', align: 'center', cellMinWidth: 60, fixed: 'left', sort: true,templet:'<div>{{d.id}}</div>',hide:true}
-                , {field: 'goodsName', title: 'Food Name',align:'center', cellMinWidth: 150, sort: true,templet:'<div>{{d.product.name}}</div>'}
-                , {field: 'imgUrl', title: 'Picture',align:'center', cellMinWidth:120, templet:'#imgUrl'}
-                , {field: 'goodsCategory', title: 'Type', align:'center',cellMinWidth: 100, templet: '<div>{{d.product.category.name}}</div>'}
-                , {field: 'price', title: 'Price',align:'center', cellMinWidth: 100,sort: true,templet:'<div>${{d.product.price}}</div>'}
-                , {field: 'count', title: 'Count',align:'center', cellMinWidth: 100,sort:true,templet:'<div>{{d.quantity}}</div>'}
-                , {field: 'status', title: 'Status',align:'center', cellMinWidth: 100,sort: true,templet:"#status"}
-                , {fixed: 'right', title: "Tool Bar",align:'center', width: 120, toolbar: '#barDemo'}
-            ]]
-        });
+        // Khai báo totalAmount ở phạm vi toàn cục để cả hai hàm có thể truy cập
+        var totalAmount = 0;
+        var total =
+            table.render({
+                elem: '#tableList'
+                , url: '/staff/order/myOrder.do?orderCode='+orderCode//
+                , title: 'Submitted Order'
+                , even: true//
+                , request: {
+                    pageName: 'pageNum' //，：page
+                    , limitName: 'pageSize' //，：limit
+                }
+                , response: {
+                    statusCode: 200
+                },
+                height:400
+                , limits: [6, 10, 20, 30]
+                ,limit:6
+                , page: true
+                ,size:'lg'
+                , cols: [[ //
+                    {field: 'odId', title:'ID', align: 'center', cellMinWidth: 60, fixed: 'left', sort: true,templet:'<div>{{d.id}}</div>',hide:true}
+                    , {field: 'goodsName', title: 'Food Name',align:'center', cellMinWidth: 150, sort: true,templet:'<div>{{d.product.name}}</div>'}
+                    , {field: 'imgUrl', title: 'Picture',align:'center', cellMinWidth:120, templet:'#imgUrl'}
+                    , {field: 'goodsCategory', title: 'Type', align:'center',cellMinWidth: 100, templet: '<div>{{d.product.category.name}}</div>'}
+                    , {field: 'price', title: 'Price',align:'center', cellMinWidth: 100,sort: true,templet:'<div>{{d.product.price}}VND</div>'}
+                    , {field: 'count', title: 'Quantity',align:'center', cellMinWidth: 100,sort:true,templet:'<div>{{d.quantity}}</div>'}
+                    ,{field: 'total_money', title:'Total', align: 'center', cellMinWidth: 100, sort: true,templet:'<div>{{d.total_money}}VND</div>'}
+                    , {field: 'status', title: 'Status',align:'center', cellMinWidth: 100,sort: true,templet:"#status"}
+                    , {fixed: 'right', title: "Tool Bar",align:'center', width: 120, toolbar: '#barDemo'}
+
+                ]],
+                done: function (res, curr, count) {
+                    totalAmount = 0;  // Reset totalAmount mỗi khi bảng được làm mới
+                    res.data.forEach(function (item) {
+                        totalAmount += item.product.price * item.quantity;
+                    });
+                    $('#totalAmount').text('Tổng tiền cần thanh toán: ' + totalAmount.toLocaleString() + ' VND');
+                }
+            });
         //
         table.on('tool(tableList)', function (obj) { //：tool ，test  table  lay-filter=""
             var data = obj.data //
@@ -130,7 +286,109 @@
                 });
             }
         });
+
+        // Thêm sự kiện nhấp vào nút "Xuất PDF"
+        $('#exportPDF').on('click', function () {
+            // const { jsPDF } = window.jspdf;
+            // var doc = new jsPDF();
+            //
+            // // Thêm tiêu đề cho PDF
+            // doc.text("Danh sách món ăn trong đơn hàng", 10, 10);
+            //
+            // // Lấy dữ liệu từ bảng DOM
+            // var tableData = [];
+            // $('#tableList + .layui-table-view .layui-table-body table tbody tr').each(function () {
+            //     var rowData = {};
+            //     $(this).find('td').each(function (index, td) {
+            //         var columnName;
+            //         switch (index) {
+            //             case 1: columnName = 'goodsName'; break;
+            //             case 3: columnName = 'goodsCategory'; break;
+            //             case 4: columnName = 'price'; break;
+            //             case 5: columnName = 'count'; break;
+            //             case 6: columnName = 'status'; break;
+            //         }
+            //         rowData[columnName] = $(td).text().trim();
+            //     });
+            //     tableData.push(rowData);
+            // });
+            //
+            // // Tạo tiêu đề cột
+            // var columns = [
+            //     { header: 'Food Name', dataKey: 'goodsName' },
+            //     { header: 'Type', dataKey: 'goodsCategory' },
+            //     { header: 'Price', dataKey: 'price' },
+            //     { header: 'Count', dataKey: 'count' },
+            //     { header: 'Status', dataKey: 'status' }
+            // ];
+            //
+            // // Tạo bảng trong PDF
+            // doc.autoTable({
+            //     head: [columns.map(col => col.header)],
+            //     body: tableData.map(row => columns.map(col => row[col.dataKey])),
+            //     startY: 20
+            // });
+            //
+            // // Lưu file PDF
+            // doc.save("order_list.pdf");
+            const { jsPDF } = window.jspdf;
+            var doc = new jsPDF();
+
+            // Sử dụng font Arial hoặc Times New Roman
+            doc.setFont("Arial", "normal");
+
+            doc.text("Bill", 10, 10);
+
+            var tableData = [];
+            $('#tableList + .layui-table-view .layui-table-body table tbody tr').each(function () {
+                var rowData = {};
+                $(this).find('td').each(function (index, td) {
+                    var columnName;
+                    switch (index) {
+                        case 1: columnName = 'goodsName'; break;
+                        // case 2: columnName = 'imgUrl'; break; // Cột hình ảnh
+                        case 3: columnName = 'goodsCategory'; break;
+                        case 4: columnName = 'price'; break;
+                        case 5: columnName = 'count'; break;
+                        case 6: columnName = 'total_money'; break;
+                    }
+                    rowData[columnName] = $(td).text().trim();
+                });
+                tableData.push(rowData);
+            });
+
+            var columns = [
+                { header: 'FoodName', dataKey: 'goodsName' },
+                // { header: 'Image', dataKey: 'imgUrl' },
+                { header: 'Type', dataKey: 'goodsCategory' },
+                { header: 'Price', dataKey: 'price' },
+                { header: 'Quantity', dataKey: 'count' },
+                { header: 'Total', dataKey: 'total_money' }
+            ];
+
+            // Thêm bảng vào PDF
+            doc.autoTable({
+                head: [columns.map(col => col.header)],
+                body: tableData.map(row => columns.map(col => row[col.dataKey])),
+                startY: 20
+            });
+
+            // Hiển thị tổng tiền dưới bảng
+            var finalY = doc.autoTable.previous.finalY; // Get Y-coordinate for the next text
+            doc.text("Total: " + totalAmount.toLocaleString() + ' VND', 10, finalY + 10);
+
+            // Thêm hình ảnh vào PDF (sử dụng base64 hoặc URL)
+            tableData.forEach((row, index) => {
+                if (row.imgUrl) {
+                    var imgBase64 = row.imgUrl; // Replace with actual base64 data or fetch from URL
+                    doc.addImage(imgBase64, 'PNG', 10, finalY + 20 + index * 30, 50, 50); // Adjust position and size
+                }
+            });
+
+            doc.save("order_list.pdf");
+        });
     });
 </script>
 </body>
 </html>
+
