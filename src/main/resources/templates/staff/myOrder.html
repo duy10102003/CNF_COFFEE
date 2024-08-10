@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>My Order</title>
-    <link rel="stylesheet" th:href="@{/layuiadmin/layui/css/layui.css}"
-          href="../../static/layuiadmin/layui/css/layui.css"
+    <link rel="stylesheet" th:href="@{/staff_assets/layuiadmin/layui/css/layui.css}"
+          href="../../static/staff_assets/layuiadmin/layui/css/layui.css"
           media="all"/>
     <link rel="stylesheet" th:href="@{/staff_assets/layuiadmin/style/admin.css}" href="../../static/staff_assets/layuiadmin/layui/css/layui.css"
           media="all"/>
@@ -42,7 +42,7 @@
             { }}
             <div style="color:red">No photo</div>
             {{#  } else { }}
-            <img src="/product_images/{{d.product.id}}/{{d.goods.imgUrl}}" class="laytable-cell-1-imgUrl">
+            <img src="{{d.product.img}}" class="laytable-cell-1-imgUrl">
             {{#  } }}
         </script>
         <script type="text/html" id="status">
@@ -96,7 +96,7 @@
                 {field: 'odId', title:'ID', align: 'center', cellMinWidth: 60, fixed: 'left', sort: true,templet:'<div>{{d.id}}</div>',hide:true}
                 , {field: 'goodsName', title: 'Food Name',align:'center', cellMinWidth: 150, sort: true,templet:'<div>{{d.product.name}}</div>'}
                 , {field: 'imgUrl', title: 'Picture',align:'center', cellMinWidth:120, templet:'#imgUrl'}
-                , {field: 'goodsCategory', title: 'Type', align:'center',cellMinWidth: 100, templet: '<div>{{d.product.category.id}}</div>'}
+                , {field: 'goodsCategory', title: 'Type', align:'center',cellMinWidth: 100, templet: '<div>{{d.product.category.name}}</div>'}
                 , {field: 'price', title: 'Price',align:'center', cellMinWidth: 100,sort: true,templet:'<div>${{d.product.price}}</div>'}
                 , {field: 'count', title: 'Count',align:'center', cellMinWidth: 100,sort:true,templet:'<div>{{d.quantity}}</div>'}
                 , {field: 'status', title: 'Status',align:'center', cellMinWidth: 100,sort: true,templet:"#status"}
@@ -110,7 +110,7 @@
             if (layEvent === 'del') {
                 layer.confirm('Dismiss this order?', function (index) {
                     $.ajax({
-                        url: "/staff/order/delGood",
+                        url: "/staff/order/delProduct",
                         type: "post",
                         dataType: "JSON",
                         data: {ids: data.id},

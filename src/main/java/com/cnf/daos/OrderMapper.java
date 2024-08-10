@@ -29,12 +29,16 @@ public class OrderMapper {
         return orderDetailDTO;
     }
 
-    public static ProductDTO toProductDTO(Product product) {
-        ProductDTO productDTO = new ProductDTO();
+    public static ProductDTO1 toProductDTO(Product product) {
+        ProductDTO1 productDTO = new ProductDTO1();
         productDTO.setId(product.getId());
         productDTO.setName(product.getName());
         productDTO.setPrice(product.getPrice());
-        productDTO.setImage(product.getImg());
+        productDTO.setImg(product.getImg());
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setId(product.getCategory().getId());
+        categoryDTO.setName(product.getCategory().getName());
+        productDTO.setCategory(categoryDTO);
         return productDTO;
     }
 

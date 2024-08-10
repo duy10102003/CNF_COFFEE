@@ -9,6 +9,6 @@ public class OrderDetailDTO {
     private int quantity;
     private double total_money;
     private Integer status ;
-    private ProductDTO product;
+    private ProductDTO1 product;
     private Integer del;
 }

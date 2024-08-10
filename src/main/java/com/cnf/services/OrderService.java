@@ -78,33 +78,72 @@ public class OrderService {
         return sum;
     }
 
+//    public Long addOrder(Orders order) {
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        order.setDate_purchase(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()));
+//        StatusOrder statusOrder = new StatusOrder();
+//        statusOrder.setId(Long.valueOf(3));
+//        order.setStatus_order(statusOrder);
+//        //orderIdorder
+//        orderRepository.save(order);
+//        //orderId
+//        Orders order1 = new Orders();
+//        order1.setId(order.getId());
+//        //
+//        for (int i = 0; i < order.getOrderDetails().size(); i++) {
+//            order.getOrderDetails().get(i).setOrders(order1);
+//            order.getOrderDetails().get(i).setTotal_money(order.getOrderDetails().get(i).getQuantity()*order.getOrderDetails().get(i).getProduct().getPrice());
+//        }
+//
+//       List<OrderDetails> list =  orderDetailsRepository.saveAll(order.getOrderDetails());
+//        //,
+//        for (OrderDetails detail:order.getOrderDetails()){
+//            updateStoreAndSold(detail.getProduct().getId(),detail.getQuantity());
+//        }
+//        if(list==null){
+//            throw new CustomException(ResultEnum.ADD_ORDER_FAIL);
+//        }
+//        return order.getId();
+//    }
+
     public Long addOrder(Orders order) {
         LocalDateTime now = LocalDateTime.now();
-
         order.setDate_purchase(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()));
+
         StatusOrder statusOrder = new StatusOrder();
-        statusOrder.setId(Long.valueOf(3));
+        statusOrder.setId(3L);  // Viết ngắn gọn hơn
+
         order.setStatus_order(statusOrder);
-        //orderIdorder
+
+        // Lưu đối tượng order
         orderRepository.save(order);
-        //orderId
+
+        // Đảm bảo `order1` được tham chiếu đúng
         Orders order1 = new Orders();
         order1.setId(order.getId());
-        //
-        for (int i = 0; i < order.getOrderDetails().size(); i++) {
-            order.getOrderDetails().get(i).setOrders(order1);
+
+        for (OrderDetails detail : order.getOrderDetails()) {
+            detail.setOrders(order1);
+
+            // Sử dụng đúng phương thức setter cho `totalMoney`
+            double totalMoney = detail.getQuantity() * detail.getProduct().getPrice();
+            detail.setTotal_money(totalMoney);
         }
 
-       List<OrderDetails> list =  orderDetailsRepository.saveAll(order.getOrderDetails());
-        //,
-        for (OrderDetails detail:order.getOrderDetails()){
-            updateStoreAndSold(detail.getProduct().getId(),detail.getQuantity());
+        List<OrderDetails> list = orderDetailsRepository.saveAll(order.getOrderDetails());
+
+        for (OrderDetails detail : order.getOrderDetails()) {
+            updateStoreAndSold(detail.getProduct().getId(), detail.getQuantity());
         }
-        if(list==null){
+
+        if (list == null || list.isEmpty()) {
             throw new CustomException(ResultEnum.ADD_ORDER_FAIL);
         }
+
         return order.getId();
     }
+
 
     public void updateStoreAndSold(Long goodsId,int count){
         Product oldGoods = productRepository.findByProId(goodsId);
