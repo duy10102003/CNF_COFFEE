@@ -25,6 +25,33 @@
     </div>
     <!-- end page title -->
 
+    <!-- Filter Form -->
+    <form th:action="@{/admin/order/export}" method="get">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="search" placeholder="Search by Address or ID..." />
+            </div>
+            <div class="col-sm-2">
+                <select class="form-control" name="status">
+                    <option value="">All Statuses</option>
+                    <option value="0">Pending</option>
+                    <option value="1">Confirmed</option>
+                    <option value="2">Shipped</option>
+                    <option value="3">Completed</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <input type="date" class="form-control" name="startDate" placeholder="Start Date" />
+            </div>
+            <div class="col-sm-3">
+                <input type="date" class="form-control" name="endDate" placeholder="End Date" />
+            </div>
+            <div class="col-sm-1">
+                <button type="submit" class="btn btn-primary">Export to Excel</button>
+            </div>
+        </div>
+    </form>
+
     <div class="row">
         <div class="col-12">
             <div class="card">

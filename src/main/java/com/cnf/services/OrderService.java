@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -163,5 +164,9 @@ public class OrderService {
 //            newGoods.setSoldState(1);
 //        }
         productRepository.save(newGoods);
+    }
+
+    public List<Orders> getFilteredOrders(String search, Integer status, LocalDate startDate, LocalDate endDate) {
+        return orderRepository.findAllByCriteria(search, status, startDate, endDate);
     }
 }
