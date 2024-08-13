@@ -3,7 +3,9 @@ package com.cnf.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +23,7 @@ public class Orders {
     private String address;
     private double total_money;
     private boolean payment;
+    private String phone;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

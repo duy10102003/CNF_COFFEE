@@ -64,6 +64,14 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     )
     List<User> findAllStaff();
 
+    @Query(
+            value = "SELECT u.* FROM User u INNER JOIN user_role ur ON u.id = ur.user_id WHERE ur.role_id = 2",
+            nativeQuery = true
+    )
+    List<User> findAllUser();
+
+
+
     @Query("SELECT u FROM User u WHERE u.active = true")
     List<User> getAllActiveUser();
 

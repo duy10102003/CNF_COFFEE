@@ -36,6 +36,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> getAllUser(){
+        return userRepository.findAllUser();
+    }
+
+
+
     public List<User> getAllSatff(){
         return userRepository.findAllStaff();
     }

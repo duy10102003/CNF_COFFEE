@@ -64,6 +64,22 @@ public class UserController {
             }
             return "client/user/register";
         }
+        List<User> users = userService.getAllUsers();
+        for (User user1 : users) {
+            if (user1.getEmail().equals(user.getEmail())) {
+                model.addAttribute("mess", "Email was existed");
+                model.addAttribute("user", user);
+                return "client/user/register";
+            }else  if (user1.getPhone()!=null && user1.getPhone().equals(user.getPhone())) {
+                model.addAttribute("mess", "Phone was existed");
+                model.addAttribute("user", user);
+                return "client/user/register";
+            }else  if (user1.getUsername().equals(user.getUsername())) {
+                model.addAttribute("mess", "UserName was existed");
+                model.addAttribute("user", user);
+                return "client/user/register";
+            }
+        }
         userService.save(user);
         return "redirect:/login";
     }

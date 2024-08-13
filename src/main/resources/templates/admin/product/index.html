@@ -32,6 +32,18 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-2">
+                        <div class="col-sm-3">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <!--                                    <input type="text" class="form-control" placeholder="Search...">-->
+                                    <!--                                    <i class="bx bx-search-alt search-icon"></i>-->
+                                    <form method="POST" enctype="multipart/form-data" th:action="@{/admin/product/upload}">
+                                        <input type="file" name="file" />
+                                        <button type="submit" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2">Import Excel File</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-4">
                             <div class="search-box me-2 mb-2 d-inline-block">
                                 <div class="position-relative">
@@ -42,22 +54,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-sm-2">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <!--                                    <input type="text" class="form-control" placeholder="Search...">-->
+                                    <!--                                    <i class="bx bx-search-alt search-icon"></i>-->
+                                    <a th:href="@{/admin/product/download}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Download Import Template</a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-3">
                             <div class="text-sm-end">
                                 <a th:href="@{/admin/product/add}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Product</a>
                             </div>
-
-                            <div class="text-sm-end">
-                                <a th:href="@{/admin/product/download}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Download Import Template</a>
-                            </div>
-
-                            <div class="text-sm-end">
-                                    <form method="POST" enctype="multipart/form-data" th:action="@{/admin/product/upload}">
-                                        <input type="file" name="file" />
-                                        <button type="submit" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2">Import Excel File</button>
-                                    </form>
-                            </div>
-
 
                         </div><!-- end col-->
 

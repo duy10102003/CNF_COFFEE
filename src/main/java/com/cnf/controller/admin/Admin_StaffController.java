@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -58,9 +60,99 @@ public class Admin_StaffController {
                 model.addAttribute(error.getField() + "_error",
                         error.getDefaultMessage());
             }
-            return "admin/satff_user/add";
+            return "admin/staff_user/add";
+        }
+
+        List<User> users = userService.getAllUsers();
+        for (User user1 : users) {
+            if (user1.getEmail().equals(staff.getEmail())) {
+                model.addAttribute("messEmail", "Email was existed");
+                model.addAttribute("user", staff);
+                return "admin/staff_user/add";
+            }else  if (user1.getPhone()!=null && user1.getPhone().equals(staff.getPhone())) {
+                model.addAttribute("messPhone", "Phone was existed");
+                model.addAttribute("user", staff);
+                return "admin/staff_user/add";
+            }else  if (user1.getUsername().equals(staff.getUsername())) {
+                model.addAttribute("messUserName", "UserName was existed");
+                model.addAttribute("user", staff);
+                return "admin/staff_user/add";
+            }
         }
         userService.saveStaff(staff);
         return "redirect:/admin/staff_user";
+    }
+
+    private String emailDefault = "";
+    private String phoneDefault = "";
+    private String userNameDefault = "";
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model){
+
+        User editStaff = null;
+        for(User staff: userService.getAllSatff()){
+            if(staff.getId() == id){
+                editStaff = staff;
+            }
+        }
+        if(editStaff != null){
+            emailDefault = editStaff.getEmail();
+            phoneDefault = editStaff.getPhone();
+            userNameDefault = editStaff.getUsername();
+
+            model.addAttribute("staff", editStaff);
+            return "admin/staff_user/edit";
+        }else {
+            return "not-found";
+        }
+    }
+
+    @PostMapping("edit")
+    public String edit(@Valid @ModelAttribute("staff") User staff,
+                       BindingResult bindingResult, Model model,
+                       RedirectAttributes redirectAttributes) throws IOException {
+
+//        if (bindingResult.hasErrors()) {
+//            List<FieldError> errors = bindingResult.getFieldErrors();
+//            for (FieldError error : errors) {
+//                model.addAttribute(error.getField() + "_error",
+//                        error.getDefaultMessage());
+//            }
+//            model.addAttribute("staff",staff);
+//            return "admin/staff_user/edit";
+//        }
+        List<User> users = userService.getAllUsers();
+        for (User user1 : users) {
+            if (!staff.getEmail().equals(emailDefault) && user1.getEmail().equals(staff.getEmail())) {
+                model.addAttribute("messEmail", "Email was existed");
+                model.addAttribute("user", staff);
+                return "admin/staff_user/edit";
+            }else  if ( !staff.getPhone().equals(phoneDefault) && user1.getPhone()!=null && user1.getPhone().equals(staff.getPhone())) {
+                model.addAttribute("messPhone", "Phone was existed");
+                model.addAttribute("user", staff);
+                return "admin/staff_user/edit";
+            }else  if (!staff.getUsername().equals(userNameDefault) && user1.getUsername().equals(staff.getUsername())) {
+                model.addAttribute("messUserName", "UserName was existed");
+                model.addAttribute("user", staff);
+                return "admin/staff_user/edit";
+            }
+        }
+        redirectAttributes.addFlashAttribute("message", "Save successfully!");
+        return "redirect:/admin/staff_user";
+    }
+
+    @GetMapping("/toggleActive/{id}")
+    public String toggleActive(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            userService.toggleActiveStatus(id);
+            redirectAttributes.addFlashAttribute("message","Active successfully!");
+            return "redirect:/admin/staff_user" ;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message","Failed to active user");
+            return "redirect:/admin/staff_user" ;
+
+        }
+
     }
 }

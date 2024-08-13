@@ -86,13 +86,14 @@ public class CartService {
 //            }
 //        }
 //    }
-    public void saveCart(@NotNull HttpSession session, String note, String address, User user, String payment) {
+    public void saveCart(@NotNull HttpSession session,String phone, String note, String address, User user, String payment) {
         var cart = getCart(session);
         if (cart.getCartItems().isEmpty()) return;
         var order = new Orders();
         order.setDate_purchase(new Date(new Date().getTime()));
         order.setTotal_money(getSumPrice(session));
         order.setNote(note);
+        order.setPhone(phone);
         order.setAddress(address);
         order.setUser(user);
         order.setStatus_order(statusOrderRepository.findById(1L).orElseThrow());

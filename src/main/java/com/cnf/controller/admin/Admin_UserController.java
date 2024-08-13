@@ -29,7 +29,7 @@ public class Admin_UserController {
 
     @GetMapping()
     public String index(Model model){
-        List<User> listUser = userService.getAllUsers();
+        List<User> listUser = userService.getAllUser();
         model.addAttribute("users", listUser);
         return "admin/user/index";
     }

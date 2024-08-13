@@ -65,11 +65,11 @@
 <!--                </div>-->
 <!--              </div>-->
             </div>
-            <div class="col-sm-8">
-              <div class="text-sm-end">
-                <a th:href="@{/admin/user/add}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New User</a>
-              </div>
-            </div><!-- end col-->
+<!--            <div class="col-sm-8">-->
+<!--              <div class="text-sm-end">-->
+<!--                <a th:href="@{/admin/user/add}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New User</a>-->
+<!--              </div>-->
+<!--            </div>&lt;!&ndash; end col&ndash;&gt;-->
           </div>
 
 <!--          <div class="table-responsive">-->
@@ -111,10 +111,13 @@
                   <thead>
                   <tr>
                     <th><span class="fa fa-location-arrow"></span> ID</th>
+                    <th> <span class="fa-regular fa-user"></span>UserName</th>
+                    <th> <span class="fa-solid fa-envelope"></span>Email</th>
                     <th><span class="fa fa-user-circle"></span>Name</th>
                     <th><span class="fa fa-phone"></span>Phone</th>
+                    <th><i class="fa-brands fa-google" style="color: #63E6BE;"></i>Provider</th>
                     <th><span class="fa fa-cog"></span>Active</th>
-                    <th><span class="fa fa-cog"></span>Action</th>
+<!--                    <th><span class="fa fa-cog"></span>Action</th>-->
 <!--                    <th>-->
 <!--                      <a asp-controller="Admin" asp-action="AddTrip" class="btn btn-link">-->
 <!--                        <span class="fa fa-plus fa-fw  text-info"></span> Add New Trip-->
@@ -124,9 +127,12 @@
                   </thead>
                   <tbody>
                   <tr th:each="user: ${users}">
-                    <td><a class="text-body fw-bold">#<span th:text="${user.id}"></span></a> </td>
+                    <td><a class="text-body fw-bold"><span th:text="${user.id}"></span></a> </td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.email}"></td>
                     <td th:text="${user.full_name}"></td>
                     <td th:text="${user.phone}"></td>
+                    <td th:text="${user.provider}"></td>
                     <td>
                       <a th:href="@{/admin/user/toggleActive/{id}(id=${user.id})}"  onclick="return confirm('Are you sure to inactive?');">
                         <button th:class="${user.active ? 'button-active' : 'button-inactive'}"
@@ -134,11 +140,11 @@
                         </button>
                       </a>
                     </td>
-                    <td>
-                      <div class="d-flex gap-3">
-                        <a th:href="@{/admin/user/edit/{id}(id=${user.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
-                      </div>
-                    </td>
+<!--                    <td>-->
+<!--                      <div class="d-flex gap-3">-->
+<!--                        <a th:href="@{/admin/user/edit/{id}(id=${user.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>-->
+<!--                      </div>-->
+<!--                    </td>-->
                   </tr>
                   </tbody>
                 </table>

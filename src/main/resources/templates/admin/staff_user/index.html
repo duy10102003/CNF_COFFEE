@@ -6,6 +6,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Staff manager</title>
+  <style>
+    .button-active {
+      background-color: green;
+      color: white;
+      border: 2px solid green;
+      border-radius: 50px; /* Tạo viền tròn */
+      padding: 10px 20px;  /* Kích thước nút */
+      cursor: pointer;
+    }
+
+    .button-inactive {
+      background-color: red;
+      color: white;
+      border: 2px solid red;
+      border-radius: 50px; /* Tạo viền tròn */
+      padding: 10px 20px;  /* Kích thước nút */
+      cursor: pointer;
+    }
+
+    .button-active:hover,
+    .button-inactive:hover {
+      opacity: 0.8; /* Tạo hiệu ứng hover */
+    }
+
+  </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -42,7 +67,7 @@
             </div>
             <div class="col-sm-8">
               <div class="text-sm-end">
-                <a th:href="@{/admin/staff_user/add}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New User</a>
+                <a th:href="@{/admin/staff_user/add}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Staff</a>
               </div>
             </div><!-- end col-->
           </div>
@@ -52,16 +77,28 @@
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
+                <th> <span class="fa-regular fa-user"></span>UserName</th>
+                <th> <span class="fa-solid fa-envelope"></span>Email</th>
                 <th class="align-middle">Name</th>
                 <th class="align-middle">Phone</th>
+                <th><span class="fa fa-cog"></span>Active</th>
                 <th class="align-middle">Action</th>
               </tr>
               </thead>
               <tbody>
               <tr th:each="user: ${users}">
                 <td><a class="text-body fw-bold">#<span th:text="${user.id}"></span></a> </td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
                 <td th:text="${user.full_name}"></td>
                 <td th:text="${user.phone}"></td>
+                <td>
+                  <a th:href="@{/admin/staff_user/toggleActive/{id}(id=${user.id})}"  onclick="return confirm('Are you sure to inactive?');">
+                    <button th:class="${user.active ? 'button-active' : 'button-inactive'}"
+                            th:text="${user.active ? 'Deactivate' : 'Activate'}">
+                    </button>
+                  </a>
+                </td>
                 <td>
                   <div class="d-flex gap-3">
                     <a th:href="@{/admin/staff_user/edit/{id}(id=${user.id})}" title="Edit" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>

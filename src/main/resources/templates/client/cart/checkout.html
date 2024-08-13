@@ -64,8 +64,15 @@
                       </div>
                     </div>
                     <div class="col-md-6">
+                      <div>
+                        <input th:field="*{phone}" type = "hidden" readonly  name="ltn__phone" placeholder="phone number">
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <h6>Phone</h6>
                       <div class="input-item input-item-phone ltn__custom-icon">
-                        <input th:field="*{phone}" readonly type="text" name="ltn__phone" placeholder="phone number">
+                        <input th:value="*{phone}" required type="text" name="phone" placeholder="phone number" pattern="0[0-9]{9}" title="Phone number must be 10 digits long and start with 0.">
                       </div>
                     </div>
                   </div>
@@ -164,6 +171,18 @@
   </form>
   <!-- WISHLIST AREA START -->
   <script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+  <script th:inline="javascript">
+    document.querySelector("form").addEventListener("submit", function(event) {
+      var phoneField = document.querySelector("[name='phone']");
+      var phonePattern = /^0[0-9]{9}$/;
+
+      if (!phonePattern.test(phoneField.value)) {
+        alert("Phone number must be 10 digits long and start with 0.");
+        event.preventDefault();
+      }
+
+    });
+  </script>
 </div>
 </body>
 </html>

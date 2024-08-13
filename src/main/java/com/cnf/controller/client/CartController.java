@@ -84,6 +84,7 @@ public class CartController {
     }
     @PostMapping("/checkout")
     public String checkout(@RequestParam("address") String address,
+                           @RequestParam("phone") String phone,
                            @RequestParam(name = "note", defaultValue = "") String note,
                            @RequestParam(name = "cash", defaultValue = "false") boolean cash,
                            @RequestParam(name = "paypal",defaultValue = "false") boolean paypal,
@@ -103,8 +104,9 @@ public class CartController {
         User user = userService.getUserbyUserName(username);
         session.setAttribute("note", note);
         session.setAttribute("address",address);
+        session.setAttribute("phone",phone);
         if(cash){
-            cartService.saveCart(session,note,address,user,"cash");
+            cartService.saveCart(session,phone,note,address,user,"cash");
             return "redirect:/cart/success";
         }
         if(paypal){
@@ -190,11 +192,12 @@ public class CartController {
         if (responseCode.equals("00")) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
-            User user = userService.findByEmail(email).orElseThrow();
+            User user = userService.findByUsername1(email).orElseThrow();
             //save
             String note =(String)session.getAttribute("note");
             String address = (String)session.getAttribute("address");
-            cartService.saveCart(session,note,address,user,"vnPay");
+            String phone = (String)session.getAttribute("phone");
+            cartService.saveCart(session,phone,note,address,user,"vnPay");
             return "redirect:/cart/success";
         }
         redirectAttributes.addFlashAttribute("message", "Có lỗi xảy ra khi thanh toán");
@@ -234,7 +237,8 @@ public class CartController {
                 //save
                 String note =(String)session.getAttribute("note");
                 String address = (String)session.getAttribute("address");
-                cartService.saveCart(session,note,address,user,"paypal");
+                String phone = (String)session.getAttribute("phone");
+                cartService.saveCart(session,phone,note,address,user,"paypal");
                 return "redirect:/cart/success";
             }
         } catch (PayPalRESTException e) {
@@ -278,7 +282,7 @@ public class CartController {
         body += "<h3 style=\"margin-top: 20px\">Shipping Address: </h3>" +
                 "<p>" +user.getFull_name()+"</p>" +
                 "<p>" +order.getAddress() +"</p>" +
-                "<p>" +user.getPhone()+ "</p>";
+                "<p>" +order.getPhone().split(",")[1]+ "</p>";
         body += "<h3 style=\"margin-top: 20px\">Thank you for choosing our products!!</h3>";
 
         emailSenderService.sendEmail(email,subject,body);

@@ -13,12 +13,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Add Staff</h4>
+                <h4 class="mb-sm-0 font-size-18">Edit Staff</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a th:href="@{/admin/staff_user}">Staff</a></li>
-                        <li class="breadcrumb-item active">Add Staff</li>
+                        <li class="breadcrumb-item active">Edit Staff</li>
                     </ol>
                 </div>
             </div>
@@ -32,8 +32,8 @@
                 <div class="card-header">
                     <h4 class="card-title">Staff Information</h4></div>
                 <div class="card-body">
-                    <form th:action="@{/admin/staff_user/add}" th:object="${staff}"
-                           method="post">
+                    <form th:action="@{/admin/staff_user/edit}" th:object="${staff}"
+                          method="post">
                         <div class="row">
                             <div class="col-sm-6">
 
@@ -59,11 +59,11 @@
                                     <input style="letter-spacing: normal" id="confirmpassword" name="confirmpassword" type="password" class="form-control" oninput="checkPasswordMatch(this);">
                                 </div>
 
-<!--                                <div class="mb-3">-->
-<!--                                    <label for="weight">Weight (kg)</label>-->
-<!--                                    <input th:field="*{weight}" id="weight" name="weight" min="0.1" type="number"-->
-<!--                                           class="form-control">-->
-<!--                                </div>-->
+                                <!--                                <div class="mb-3">-->
+                                <!--                                    <label for="weight">Weight (kg)</label>-->
+                                <!--                                    <input th:field="*{weight}" id="weight" name="weight" min="0.1" type="number"-->
+                                <!--                                           class="form-control">-->
+                                <!--                                </div>-->
                             </div>
 
                             <div class="col-sm-6">

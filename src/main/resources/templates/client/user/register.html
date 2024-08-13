@@ -44,14 +44,19 @@
                     </div>
                 </div>
             </div>
+            <div th:if="${mess}" class="alert alert-danger">
+                <!--                Invalid username and password.-->
+                <p style="color: red;" th:text="${mess}"></p>
+            </div>
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
                     <div class="account-login-inner">
                         <form th:action="@{/register}" th:object="${user}" method="post" class="ltn__form-box contact-form-box">
-                            <input required type="text" name="full_name" placeholder="Full Name">
-                            <input required type="text" name="phone" placeholder="Phone">
-                            <input required type="text" name="email" placeholder="Email*">
-                            <input required type="text" name="username" placeholder="UserName">
+                            <input required type="text" name="full_name" placeholder="Full Name" th:value="*{full_name}" >
+                            <input required type="text" name="phone" placeholder="Phone" pattern="0[0-9]{9}" title="Phone number must be 10 digits long and start with 0." th:value="*{phone}">
+                            <input required type="email" name="email" placeholder="Email*" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                                   title="Please enter a valid email address." th:value="*{email}">
+                            <input required type="text" name="username" placeholder="UserName" pattern="[A-Za-z0-9]{4,}" title="Username must be at least 4 characters long and contain only letters and numbers." th:value="*{username}">
                             <input required style="letter-spacing: normal" id="password" type="password" name="password" placeholder="Password*">
                             <input style="letter-spacing: normal" type="password" name="confirmpassword" placeholder="Confirm Password*"
                                    oninput="checkPasswordMatch(this);">
@@ -80,6 +85,28 @@
                 fieldConfirmPassword.setCustomValidity("");
             }
         }
+        document.querySelector("form").addEventListener("submit", function(event) {
+            var phoneField = document.querySelector("[name='phone']");
+            var usernameField = document.querySelector("[name='username']");
+
+            var emailField = document.querySelector("[name='email']");
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!emailPattern.test(emailField.value)) {
+                alert("Please enter a valid email address.");
+                event.preventDefault();
+            }
+
+            if (!phoneField.checkValidity()) {
+                alert("Phone number must be 10 digits long.");
+                event.preventDefault();
+            }
+
+            if (!usernameField.checkValidity()) {
+                alert("Username must be at least 4 characters long and contain only letters and numbers.");
+                event.preventDefault();
+            }
+        });
     </script>
 </div>
 </body>
