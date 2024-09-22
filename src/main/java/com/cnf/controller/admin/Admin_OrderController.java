@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/order")
@@ -72,10 +74,14 @@ public class Admin_OrderController {
     public ResponseEntity<byte[]> exportOrdersToExcel(
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "status", required = false) Integer status,
-            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) java.util.Date startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) java.util.Date  endDate) {
 
-        List<Orders> orders = orderService.getFilteredOrders(search, status, startDate, endDate);
+        Date sqlStartDate = Optional.ofNullable(startDate).map(date -> new Date(date.getTime())).orElse(null);
+        Date sqlEndDate = Optional.ofNullable(endDate).map(date -> new Date(date.getTime())).orElse(null);
+
+
+        List<Orders> orders = orderService.getFilteredOrders(search, status, sqlStartDate, sqlEndDate);
 
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Orders");

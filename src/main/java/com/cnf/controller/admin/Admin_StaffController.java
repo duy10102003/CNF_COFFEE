@@ -138,6 +138,7 @@ public class Admin_StaffController {
                 return "admin/staff_user/edit";
             }
         }
+        userService.saveStaff(staff);
         redirectAttributes.addFlashAttribute("message", "Save successfully!");
         return "redirect:/admin/staff_user";
     }

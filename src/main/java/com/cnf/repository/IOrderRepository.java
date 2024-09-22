@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface IOrderRepository extends JpaRepository<Orders, Long> {
             + "AND (:endDate IS NULL OR o.date_purchase <= :endDate)")
     List<Orders> findAllByCriteria(@Param("search") String search,
                                   @Param("status") Integer status,
-                                  @Param("startDate") LocalDate startDate,
-                                  @Param("endDate") LocalDate endDate);
+                                  @Param("startDate") Date startDate,
+                                  @Param("endDate") Date endDate);
 
 }

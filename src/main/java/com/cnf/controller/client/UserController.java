@@ -56,30 +56,32 @@ public class UserController {
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") User user,
                            BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                model.addAttribute(error.getField() + "_error",
-                        error.getDefaultMessage());
-            }
-            return "client/user/register";
-        }
+//        if (bindingResult.hasErrors()) {
+//            List<FieldError> errors = bindingResult.getFieldErrors();
+//            for (FieldError error : errors) {
+//                model.addAttribute(error.getField() + "_error",
+//                        error.getDefaultMessage());
+//            }
+//            return "client/user/register";
+//        }
         List<User> users = userService.getAllUsers();
         for (User user1 : users) {
-            if (user1.getEmail().equals(user.getEmail())) {
-                model.addAttribute("mess", "Email was existed");
+            if (user1.getUsername().equals(user.getUsername())) {
+                model.addAttribute("messUser", "UserName was existed");
+                model.addAttribute("user", user);
+                return "client/user/register";
+                }
+          else if (user1.getEmail().equals(user.getEmail())) {
+                model.addAttribute("messEmail", "Email was existed");
                 model.addAttribute("user", user);
                 return "client/user/register";
             }else  if (user1.getPhone()!=null && user1.getPhone().equals(user.getPhone())) {
-                model.addAttribute("mess", "Phone was existed");
-                model.addAttribute("user", user);
-                return "client/user/register";
-            }else  if (user1.getUsername().equals(user.getUsername())) {
-                model.addAttribute("mess", "UserName was existed");
+                model.addAttribute("messPhone", "Phone was existed");
                 model.addAttribute("user", user);
                 return "client/user/register";
             }
         }
+        user.setActive(true);
         userService.save(user);
         return "redirect:/login";
     }

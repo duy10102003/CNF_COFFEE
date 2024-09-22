@@ -44,9 +44,17 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${mess}" class="alert alert-danger">
+            <div th:if="${messUser}" class="alert alert-danger">
                 <!--                Invalid username and password.-->
-                <p style="color: red;" th:text="${mess}"></p>
+                <p style="color: red;" th:text="${messUser}"></p>
+            </div>
+            <div th:if="${messPhone}" class="alert alert-danger">
+                <!--                Invalid username and password.-->
+                <p style="color: red;" th:text="${messPhone}"></p>
+            </div>
+            <div th:if="${messEmail}" class="alert alert-danger">
+                <!--                Invalid username and password.-->
+                <p style="color: red;" th:text="${messEmail}"></p>
             </div>
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">

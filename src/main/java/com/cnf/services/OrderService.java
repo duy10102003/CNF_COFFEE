@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -166,7 +166,7 @@ public class OrderService {
         productRepository.save(newGoods);
     }
 
-    public List<Orders> getFilteredOrders(String search, Integer status, LocalDate startDate, LocalDate endDate) {
+    public List<Orders> getFilteredOrders(String search, Integer status, Date startDate, Date endDate) {
         return orderRepository.findAllByCriteria(search, status, startDate, endDate);
     }
 }

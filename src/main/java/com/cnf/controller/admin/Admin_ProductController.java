@@ -1,5 +1,6 @@
 package com.cnf.controller.admin;
 
+import com.cnf.entity.Orders;
 import com.cnf.entity.Product;
 import com.cnf.helper.ImportHelper;
 import com.cnf.services.CategoryService;
@@ -7,11 +8,16 @@ import com.cnf.services.ImportDataService;
 import com.cnf.services.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -149,20 +156,39 @@ public class Admin_ProductController {
     }
 
     @GetMapping("/download")
-    public String getFile(HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
+    public ResponseEntity<byte[]> getFile() throws IOException {
         // Tạo và tải file Excel
-        String filename = "ProductImport.xlsx";
-        InputStreamResource file = new InputStreamResource(fileService.load());
+//        String filename = "ProductImport.xlsx";
+//        InputStreamResource file = new InputStreamResource(fileService.load());
+//
+//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+//        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+//        file.getInputStream().transferTo(response.getOutputStream());
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("ProductImport");
+            Row header = sheet.createRow(0);
+            header.createCell(0).setCellValue("active");
+            header.createCell(1).setCellValue("description");
+            header.createCell(2).setCellValue("discount");
+            header.createCell(3).setCellValue("img");
+            header.createCell(4).setCellValue("name");
+            header.createCell(5).setCellValue("price");
+            header.createCell(6).setCellValue("quantity");
+            header.createCell(7).setCellValue("weight");
+            header.createCell(8).setCellValue("category_id");
 
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
-        file.getInputStream().transferTo(response.getOutputStream());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            workbook.write(out);
 
-        // Thêm thông báo sau khi tải file thành công
-        redirectAttributes.addFlashAttribute("message", "File Excel đã được tải xuống thành công!");
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment; filename=ProductImport.xlsx");
 
-        // Chuyển hướng về trang /admin/product
-        return "redirect:/admin/product";
+            return new ResponseEntity<>(out.toByteArray(), headers, HttpStatus.OK);
+        } catch (Exception e) {
+            // Handle exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @GetMapping("/delete/{id}")
